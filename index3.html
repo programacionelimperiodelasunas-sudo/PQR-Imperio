@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consentimiento Informado - El Imperio de las Uñas (Pedicura)</title>
+    <!-- Premium Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Alex+Brush&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific Anamnesis styles to make it look premium and responsive */
+        .anamnesis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .anamnesis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .table-title-header {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1.5px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .anamnesis-table,
+        .allergies-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .anamnesis-table th,
+        .anamnesis-table td,
+        .allergies-table th,
+        .allergies-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .anamnesis-table th {
+            background-color: var(--primary-light);
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .anamnesis-table th.col-patologia {
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        .anamnesis-table td.cell-center {
+            text-align: center;
+        }
+
+        .checkbox-cell-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            gap: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .checkbox-cell-label input {
+            accent-color: var(--accent);
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+
+        .origin-group,
+        .habits-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .nested-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin: 15px 0;
+        }
+
+        .nested-table th,
+        .nested-table td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: left;
+        }
+
+        .nested-table th {
+            background-color: var(--primary-light);
+            font-weight: 700;
+        }
+
+        @media print {
+            .anamnesis-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 15px;
+            }
+
+            .checkbox-cell-label input:not(:checked) {
+                visibility: hidden;
+            }
+
+            .checkbox-cell-label input:checked {
+                appearance: none;
+                border: none;
+            }
+
+            .checkbox-cell-label input:checked::before {
+                content: "✓";
+                font-weight: bold;
+                color: #000;
+                font-size: 10pt;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Navigation Tabs (Hidden on Print) -->
+        <nav class="nav-tabs no-print">
+            <a href="index.html" class="nav-tab">
+                <span class="nav-tab-icon">💅</span>
+                <span>Uñas Artificiales</span>
+            </a>
+            <a href="index2.html" class="nav-tab">
+                <span class="nav-tab-icon">👁️</span>
+                <span>Cejas y Pestañas</span>
+            </a>
+            <a href="index3.html" class="nav-tab active">
+                <span class="nav-tab-icon">🦶</span>
+                <span>Pedicura Especializada</span>
+            </a>
+        </nav>
+
+        <!-- Floating Brand Header -->
+        <header class="main-header">
+            <div class="brand-badge">Documento Autorizado y Distribuido por</div>
+            <h1 class="brand-title">El Imperio de las Uñas</h1>
+            <p class="brand-subtitle">BY PAULA SAS • NIT 901396476 - 1</p>
+            <div class="document-reference">Referencia: Consentimiento Informado (Pedicura Especializada)</div>
+        </header>
+
+        <form id="consent-form" class="consent-form" onsubmit="event.preventDefault();">
+
+            <!-- SECTION 1: DATOS PERSONALES -->
+            <section class="form-section card-style">
+                <h2 class="section-title">1. Datos Personales del Cliente</h2>
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label for="cliente-nombre">Yo, (Nombre Completo) <span class="required">*</span></label>
+                        <input type="text" id="cliente-nombre" required placeholder="Nombre completo del cliente">
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-tipo-doc">Identificado con <span class="required">*</span></label>
+                        <select id="cliente-tipo-doc" required>
+                            <option value="" disabled selected>Seleccione tipo...</option>
+                            <option value="C.C.">Cédula de Ciudadanía (C.C.)</option>
+                            <option value="C.E.">Cédula de Extranjería (C.E.)</option>
+                            <option value="T.I.">Tarjeta de Identidad (T.I.)</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-otro-doc">Especifique otro tipo</label>
+                        <input type="text" id="cliente-otro-doc" placeholder="Si seleccionó otro...">
+                    </div>
+                </div>
+
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label for="cliente-numero-doc">Número de Documento <span class="required">*</span></label>
+                        <input type="text" id="cliente-numero-doc" required placeholder="Número de identificación">
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-expedicion">Expedido en <span class="required">*</span></label>
+                        <input type="text" id="cliente-expedicion" required placeholder="Ciudad de expedición">
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-telefono">Teléfono / WhatsApp <span class="required">*</span></label>
+                        <input type="tel" id="cliente-telefono" required placeholder="Número telefónico">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: DECLARACIÓN LEGAL -->
+            <section class="form-section card-style legal-declarations">
+                <h2 class="section-title">2. Declaración de Consentimiento y Exoneración</h2>
+                <div class="legal-text-container">
+                    <p>
+                        Yo doy constancia del estado actual de las uñas de mis pies, por tal razón de manera libre, he
+                        sido informado por la profesional que el procedimiento que me van a realizar, es netamente
+                        estético y no medico clínico, por lo cual para el adecuado diagnostico en caso de existir algún
+                        padecimiento o enfermedad debo acudir a los diferentes procedimientos, exámenes o consultas con
+                        el médico especializado que el caso amerite, entiendo que no debo suspender los tratamientos
+                        descritos por ellos hasta una vez no me sea autorizado, también me han sido aclaradas las dudas,
+                        he comprendido total y claramente la naturaleza y desarrollo del procedimiento, así como las
+                        alternativas de procesos o materiales a usar en mi caso en particular, además me han informado
+                        del mantenimiento, la no garantía del procedimiento y la duración en tiempo para efectuar mis
+                        retoques los cuales se deberán realizar de <strong>15 a 20 días calendario</strong>.
+                    </p>
+                    <p>
+                        Con el presente dejo constancia y manifiesto que he reportado alguna patología mediante la cual
+                        se pueda tener alguna reacción que perjudique el estado actual de mi salud e integridad física;
+                        de igual manera de forma abierta y libre manifestó que la empresa <strong>EL IMPERIO DE LAS UÑAS
+                            BY PAULA SAS</strong> identificada con numero de Nit. <strong>901396476 -1</strong>, se
+                        exonera de toda clase de responsabilidad frente al reclamos de los perjuicios que se generen por
+                        las omisiones a sugerencias propias del desarrollo del procedimiento descrito y de forma
+                        posterior a este, según las exigencias propias del caso.
+                    </p>
+                </div>
+                <div class="consent-check-wrapper">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="acepta-declaracion" required>
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">He leído, comprendo y acepto la totalidad de la declaración legal
+                            de consentimiento y exoneración de responsabilidad. <span class="required">*</span></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- SECTION 3: PROCEDIMIENTOS -->
+            <section class="form-section card-style">
+                <h2 class="section-title">3. Explicación de Procedimientos a Realizar</h2>
+                <p class="section-desc">Seleccione el o los procedimientos que se le realizarán hoy para leer e
+                    interactuar con su contenido técnico.</p>
+
+                <div class="procedures-container">
+
+                    <!-- 1. Pedicura con Esmaltado Tradicional/Semipermanente -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-tradicional">
+                            <span class="procedure-title">Pedicura con Esmalte Tradicional / Semipermanente</span>
+                        </label>
+                        <div class="procedure-content">
+                            <p class="highlight-p accent" style="margin-bottom: 12px; font-size: 0.85rem;">Solamente se
+                                podrá realizar esmaltado en clientes sin ninguna posible patología en uñas o piel.</p>
+                            <ol>
+                                <li>La prestación del servicio se realizará con guantes y tapabocas que asegurarán el
+                                    cuidado bioseguro durante todo el tiempo del procedimiento.</li>
+                                <li>Se brindará gel antibacterial para que el cliente se aplique en toda la superficie
+                                    interdigital y plantar de sus pies.</li>
+                                <li>Se aplicará en toda la superficie plantar removedor de callos con ayuda de algodón
+                                    laminado y se envolverá el pie en vinipel para dejar actuar el producto.</li>
+                                <li>Si el cliente cuenta con esmalte tradicional o semipermanente se realizará el retiro
+                                    según el tipo de esmaltado, siendo con quitaesmalte la primera opción o con drill y
+                                    broca la segunda opción de acuerdo con los requerimientos mismos del procedimiento
+                                    efectuado.</li>
+                                <li>Se empujará suavemente la cutícula con un palo de naranjo y se cortará o limará la
+                                    uña según su necesidad y gusto.</li>
+                                <li>Se comunicará al cliente que se utilizará la herramienta Cureta para verificar que
+                                    no exista bordes, espículas, hiperqueratosis en los laterales que puedan generar
+                                    onicocriptosis y se realizará los cortes en la lámina de keratina según el molde
+                                    natural de la uña sin que esto cause alguna lesión.</li>
+                                <li>Se realizará limpieza de cutícula y laterales con ayuda de pedicura drill usando
+                                    diferentes brocas que facilitan este procedimiento.</li>
+                                <li>Se retirará los algodones y se realizará la limpieza del perigeo y piel muerta con
+                                    ayuda de un hilo que se pasará por la zona plantar.</li>
+                                <li>Se maquillará según las indicaciones y preferencias del cliente.</li>
+                                <li>Se realizará un lavado e hidratación de los pies.</li>
+                            </ol>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm"
+                                    data-proc="Pedicura con Esmalte Tradicional/Semipermanente">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Pedicura con
+                                    Esmalte Tradicional / Semipermanente.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 2. Pedicura con Reconstrucción -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-reconstruccion">
+                            <span class="procedure-title">Pedicura con Reconstrucción</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realiza el mismo procedimiento de pedicura con esmaltado
+                                    tradicional/semipermanente, adicional a esto:</li>
+                                <li>Se realizaran reconstrucciones de uña con Polygel únicamente con firma de
+                                    consentimiento informado y en casos de ruptura de uña o cortes redondos que se
+                                    quieran estructurar estéticamente con una forma diferente. En casos de la existencia
+                                    de coloraciones o cualquier otra enfermedad propia de las características biológicas
+                                    de la(s) uña(s) se realizará una previa evaluación del profesional que se encuentra
+                                    realizando la atención, esto aclarando que el mismo hace parte de la rama de la
+                                    belleza y no de la medicina, por lo que en caso de que en la evaluación
+                                    correspondiente no sea satisfactoria el mismo podrá dar por terminado el proceso a
+                                    efectuar por la corresponsabilidad que le atañe en el cuidado de la salud del
+                                    usuario.</li>
+                                <li>Se realizará limpieza de cutícula y laterales con ayuda de pedicura drill usando
+                                    diferentes brocas que facilitan este procedimiento.</li>
+                                <li>Se realizará la búsqueda de espículas con ayuda de la cureta, se realizará la
+                                    limpieza necesaria para que la uña quede completamente despejada de tejidos
+                                    subyacentes.</li>
+                                <li>Se realizará la preparación de la uña para la aplicación del polygel con ayuda de
+                                    una lima de gramaje 180, posterior a esto se aplicarán los preparadores de
+                                    adherencia necesarios.</li>
+                                <li>Se aplicará el Polygel según las indicaciones del cliente, posterior a esto se
+                                    realizará el pulido del producto dando una estructura estética de la estructura de
+                                    la reconstrucción.</li>
+                                <li>Se realizará el maquillaje según las preferencias del cliente.</li>
+                                <li>Se realizará un lavado e hidratación de los pies.</li>
+                            </ol>
+                            <div class="recommendations-box">
+                                <h4>RECOMENDACIONES POSTERIORES A RECONSTRUCCIONES DE UÑAS</h4>
+                                <ul>
+                                    <li>Si usted usa calzado con puntas de acero (no tendrá garantía).</li>
+                                    <li>Si realiza natación no se podrá realizar la reconstrucción.</li>
+                                    <li>No usar calzado tan ajustado.</li>
+                                    <li>Procurar evitar golpes que puedan desprender la reconstrucción.</li>
+                                    <li>Acudir a los retoques entre 15 a 20 días calendario.</li>
+                                </ul>
+                            </div>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Pedicura con Reconstrucción">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Pedicura con
+                                    Reconstrucción.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 3. Pedicura con Onicocriptosis -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-onicocriptosis">
+                            <span class="procedure-title">Pedicura con Onicocriptosis (Tratamiento Leve/Medio)</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realiza el mismo procedimiento de pedicura, adicional a esto:</li>
+                                <li>Se tratará únicamente onicocriptosis nivel leve y medio únicamente con
+                                    consentimiento y previa evaluación del profesional que se encuentra realizando la
+                                    atención, esto aclarando que el mismo hace parte de la rama de la belleza y no de la
+                                    medicina, por lo que en caso de que en la evaluación correspondiente no sea
+                                    satisfactoria el mismo podrá dar por terminado el proceso a efectuar por la
+                                    corresponsabilidad que le atañe en el cuidado de la salud del usuario.</li>
+                                <li>Se utilizará elementos de bioseguridad que incluyen: cofia, bata quirúrgica,
+                                    tapabocas, guantes, careta o gafas y uniforme antifluido.</li>
+                                <li>Se realizará limpieza de cutícula y laterales con ayuda de pedicura drill usando
+                                    diferentes brocas que facilitan este procedimiento.</li>
+                                <li>Se realizará la búsqueda de espículas con ayuda de la cureta.</li>
+                                <li>Se realiza corte recto con ayuda de las pinzas, corta cutículas o guvia recto de
+                                    manera paralela a los laterales (paroniquios) de la uña con el fin de retirar la(s)
+                                    espículas que generaban la molestia.</li>
+                                <li>Podrá presentar dolor o sangrado leve al momento del corte profesional de la uña.
+                                </li>
+                                <li>La zona se mantendrá limpia con ayuda de gaza estéril y suero fisiológico, si la
+                                    onicocriptosis es de nivel medio se ubicará un trozo de cinta kinesiológica para
+                                    ampliar la zona de crecimiento de la uña.</li>
+                                <li>Se aplicará crema con ácido fusídico y se envolverá el dedo con gasa estéril y
+                                    micropore.</li>
+                                <li>No se podrá realizar ningún tipo de maquillaje en (los) dedo(s) afectados.</li>
+                            </ol>
+
+                            <div style="margin: 20px 0;">
+                                <h4 style="font-size: 0.9rem; color: var(--accent); margin-bottom: 10px;">Evaluación de
+                                    Nivel de Onicocriptosis:</h4>
+
+                                <div class="grid-col-3" style="grid-template-columns: 1fr 1fr; gap: 15px;">
+                                    <!-- Leve -->
+                                    <div class="signature-card" style="align-items: flex-start; padding: 15px;">
+                                        <span
+                                            style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase; color: var(--dark); border-bottom: 1px solid var(--border-color); width: 100%; padding-bottom: 5px; margin-bottom: 8px;">Nivel
+                                            Leve</span>
+                                        <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-leve-1"><span>Placa ungueal no penetra la piel ni el
+                                                    tejido</span></label>
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-leve-2"><span>Nivel de dolor nulo o muy
+                                                    bajo</span></label>
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-leve-3"><span>Inflamación nula o muy
+                                                    pequeña</span></label>
+                                        </div>
+                                    </div>
+                                    <!-- Medio -->
+                                    <div class="signature-card" style="align-items: flex-start; padding: 15px;">
+                                        <span
+                                            style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase; color: var(--dark); border-bottom: 1px solid var(--border-color); width: 100%; padding-bottom: 5px; margin-bottom: 8px;">Nivel
+                                            Medio</span>
+                                        <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-medio-1"><span>Placa ungueal penetra la piel/tejido
+                                                    adyacente</span></label>
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-medio-2"><span>Evidencia formación de
+                                                    granulomas</span></label>
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-medio-3"><span>Nivel de dolor medio</span></label>
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-medio-4"><span>Nivel de inflamación medio</span></label>
+                                            <label class="checkbox-cell-label"><input type="checkbox"
+                                                    name="oni-medio-5"><span>Presencia de supuración</span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="recommendations-box">
+                                <h4>RECOMENDACIONES POSTERIORES A EXTRACCIÓN DE ESPÍCULAS</h4>
+                                <ul>
+                                    <li>No debe mojar el dedo durante 24 horas.</li>
+                                    <li>Cuando cumpla las 24 horas debe retirar el vendaje y realizar limpieza con ayuda
+                                        de suero fisiológico y gasa estéril.</li>
+                                    <li>Debe comprar la crema de ácido fusídico y aplicarla durante 8 días 1 vez al día.
+                                    </li>
+                                    <li>Evitar calzados ajustados y mantener la zona muy aseada.</li>
+                                    <li>No presionar el pie ni los dedos afectados.</li>
+                                    <li>No se podrá realizar ningún tipo de maquillaje en (los) dedo(s) afectado(s).
+                                    </li>
+                                    <li>No poner zapatos ajustados que puedan generar lesiones en la zona afectada.</li>
+                                </ul>
+                            </div>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Pedicura con Onicocriptosis">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Pedicura con
+                                    Onicocriptosis.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. Pedicura con Posible Onicomicosis -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-onicomicosis">
+                            <span class="procedure-title">Pedicura con Posible Onicomicosis</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realiza el mismo procedimiento de pedicura, adicional a esto:</li>
+                                <li>Se tratará únicamente onicomicosis leves o medias firmando consentimiento informado
+                                    y previa evaluación del profesional que se encuentra realizando la atención, esto
+                                    aclarando que el mismo hace parte de la rama de la belleza y no de la medicina, por
+                                    lo que en caso de que en la evaluación correspondiente no sea satisfactoria el mismo
+                                    podrá dar por terminado el proceso a efectuar por la corresponsabilidad que le atañe
+                                    en el cuidado de la salud del usuario.</li>
+                                <li>Se utilizará elementos de bioseguridad que incluyen: cofia, bata quirúrgica,
+                                    tapabocas, guantes, careta o gafas y uniforme antifluido.</li>
+                                <li>Se realizará limpieza de cutícula y laterales con ayuda de pedicura drill usando
+                                    diferentes brocas que facilitan este procedimiento.</li>
+                                <li>Si es posible según la ubicación de la lesión se realiza la limpieza de tejido
+                                    subyacente en el desprendimiento de la capa de keratina y el lecho ungueal.</li>
+                                <li>Se limará la superficie de la uña y se aplicará ClearZal.</li>
+                                <li>No se podrá aplicar ClearZal en casos de lesiones de la piel, Diabetes no
+                                    controlada, en caso de que el cliente se encuentre en tratamientos comprometidos con
+                                    sistemas inmunológicos débiles, mala circulación en las manos y los pies, cuando la
+                                    uña presenta además de la onicomicosis, onicogrifosis u onicocriptosis.</li>
+                                <li>En estos casos con posible onicomicosis no se realiza ningún tipo de maquillaje ya
+                                    que este generará complicaciones en el estado actual de la uña(s).</li>
+                            </ol>
+
+                            <div style="margin: 20px 0;">
+                                <h4 style="font-size: 0.9rem; color: var(--accent); margin-bottom: 10px;">Presencia de
+                                    Posible Onicomicosis:</h4>
+                                <div class="signature-card" style="align-items: flex-start; padding: 15px;">
+                                    <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                                        <label class="checkbox-cell-label"><input type="checkbox"
+                                                name="onico-tipo-1"><span>Onicomicosis subungueal distal</span></label>
+                                        <label class="checkbox-cell-label"><input type="checkbox"
+                                                name="onico-tipo-2"><span>Onicomicosis subungueal
+                                                proximal</span></label>
+                                        <label class="checkbox-cell-label"><input type="checkbox"
+                                                name="onico-tipo-3"><span>Onicomicosis superficial blanca</span></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="recommendations-box">
+                                <h4>RECOMENDACIONES PARA POSIBLE ONICOMICOSIS</h4>
+                                <ul>
+                                    <li>Debe realizar este procedimiento entre 8 a 15 días según la complejidad de la
+                                        onicomicosis.</li>
+                                    <li>Realice la limpieza de los dedos afectados con ayuda de suero fisiológico y gasa
+                                        estéril o Servitoalla desechable.</li>
+                                    <li>Lime ligeramente la superficie de la uña y aplique el ClearZal todos los días 2
+                                        veces al día (mañana y noche).</li>
+                                    <li>Todos los elementos que utilice durante este cuidado debe desecharlos y no
+                                        reutilizar ya que puede transmitir la micosis.</li>
+                                    <li>De no evidenciar recuperación le recomendamos acudir a su médico con el fin de
+                                        determinar qué tipo de lesión presenta su(s) uña(s).</li>
+                                    <li>Siga de manera estricta las recomendaciones de su médico con el fin de dar
+                                        solución a la situación actual de su(s) uña(s).</li>
+                                </ul>
+                            </div>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm"
+                                    data-proc="Pedicura con Posible Onicomicosis">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Pedicura con
+                                    Posible Onicomicosis.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 4: ANAMNESIS -->
+            <section class="form-section card-style">
+                <h2 class="section-title">4. Historial de Salud (Anamnesis)</h2>
+                <p class="section-desc">Marque si usted o algún familiar en primer grado de consanguinidad presenta o ha
+                    presentado alguna de las siguientes patologías.</p>
+
+                <div class="anamnesis-grid">
+                    <!-- Column 1 -->
+                    <div>
+                        <div class="table-title-header">Patologías - Grupo A</div>
+                        <table class="anamnesis-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-patologia">Patología</th>
+                                    <th>Personal</th>
+                                    <th>Familiar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Diabetes</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-diabetes-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-diabetes-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>VIH, SIDA</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-vih-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-vih-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Anemia</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-anemia-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-anemia-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Artritis, Osteoartritis</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-artritis-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-artritis-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Asma</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-asma-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-asma-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Problemas de Riñón</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-rinon-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-rinon-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Cáncer</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-cancer-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-cancer-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Dolor de pecho</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-pecho-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-pecho-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Problemas de circulación</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-circulacion-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-circulacion-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Colesterol</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-colesterol-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-colesterol-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Depresión</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-depresion-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-depresion-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Epilepsia</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-epilepsia-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-epilepsia-f"><span>Sí</span></label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div>
+                        <div class="table-title-header">Patologías - Grupo B</div>
+                        <table class="anamnesis-table">
+                            <thead>
+                                <tr>
+                                    <th class="col-patologia">Patología</th>
+                                    <th>Personal</th>
+                                    <th>Familiar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dolores de cabeza crónicos</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-cefalea-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-cefalea-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Corazón: cirugías o enfermedad</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-corazon-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-corazon-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Soplos en el corazón</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-soplo-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-soplo-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Hepatitis A, B o C</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-hepatitis-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-hepatitis-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Hipertensión</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-hipertension-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-hipertension-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Problemas hepáticos</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-hepatico-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-hepatico-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Enfermedades psiquiátricas</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-psiquiatrica-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-psiquiatrica-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Enfermedades respiratorias</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-respiratoria-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-respiratoria-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Fiebre reumática</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-fiebre-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-fiebre-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Fibromialgia</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-fibro-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-fibro-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Fracturas</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-fracturas-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-fracturas-f"><span>Sí</span></label></td>
+                                </tr>
+                                <tr>
+                                    <td>Otras patologías</td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-otras-p"><span>Sí</span></label></td>
+                                    <td class="cell-center"><label class="checkbox-cell-label"><input type="checkbox"
+                                                name="pat-otras-f"><span>Sí</span></label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="margin-top-large">
+                    <div class="table-title-header">Origen de la enfermedad – patología – accidente</div>
+                    <div class="origin-group">
+                        <label class="custom-checkbox"><input type="radio" name="origen-condicion"
+                                value="Profesional"><span class="checkbox-checkmark"
+                                style="border-radius:50%;"></span><span
+                                class="checkbox-label">Profesional</span></label>
+                        <label class="custom-checkbox"><input type="radio" name="origen-condicion" value="General"><span
+                                class="checkbox-checkmark" style="border-radius:50%;"></span><span
+                                class="checkbox-label">General</span></label>
+                        <label class="custom-checkbox"><input type="radio" name="origen-condicion" value="Persona sana"
+                                checked><span class="checkbox-checkmark" style="border-radius:50%;"></span><span
+                                class="checkbox-label">Persona sana</span></label>
+                        <label class="custom-checkbox"><input type="radio" name="origen-condicion"
+                                value="Accidente de trabajo"><span class="checkbox-checkmark"
+                                style="border-radius:50%;"></span><span class="checkbox-label">Accidente de
+                                trabajo</span></label>
+                        <label class="custom-checkbox"><input type="radio" name="origen-condicion"
+                                value="Accidente fuera del trabajo"><span class="checkbox-checkmark"
+                                style="border-radius:50%;"></span><span class="checkbox-label">Accidente fuera del
+                                trabajo</span></label>
+                    </div>
+                </div>
+
+                <!-- ALERGIAS -->
+                <div class="margin-top-large">
+                    <div class="table-title-header">Alergias Conocidas</div>
+                    <div class="grid-col-3"
+                        style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                        <label class="custom-checkbox"><input type="checkbox" name="alergia-item"
+                                value="Anestesias locales"><span class="checkbox-checkmark"></span><span
+                                class="checkbox-label">Anestesias locales</span></label>
+                        <label class="custom-checkbox"><input type="checkbox" name="alergia-item"
+                                value="Novocaína"><span class="checkbox-checkmark"></span><span
+                                class="checkbox-label">Novocaína</span></label>
+                        <label class="custom-checkbox"><input type="checkbox" name="alergia-item"
+                                value="Penicilina"><span class="checkbox-checkmark"></span><span
+                                class="checkbox-label">Penicilina</span></label>
+                        <label class="custom-checkbox"><input type="checkbox" name="alergia-item" value="Aspirina"><span
+                                class="checkbox-checkmark"></span><span class="checkbox-label">Aspirina</span></label>
+                        <label class="custom-checkbox"><input type="checkbox" name="alergia-item" value="Látex"><span
+                                class="checkbox-checkmark"></span><span class="checkbox-label">Látex</span></label>
+                        <label class="custom-checkbox"><input type="checkbox" name="alergia-item" value="Codeína"><span
+                                class="checkbox-checkmark"></span><span class="checkbox-label">Codeína</span></label>
+                        <label class="custom-checkbox"><input type="checkbox" name="alergia-item" value="Yodo"><span
+                                class="checkbox-checkmark"></span><span class="checkbox-label">Yodo</span></label>
+                    </div>
+                    <div class="input-group" style="margin-top: 15px;">
+                        <label for="alergia-otra">Otra Alergia:</label>
+                        <input type="text" id="alergia-otra" placeholder="Escriba otra alergia si aplica...">
+                    </div>
+                </div>
+
+                <!-- CIRUGÍAS / HOSPITALIZACIONES -->
+                <div class="input-group margin-top-large">
+                    <label for="historial-cirugias">Hospitalizaciones – Cirugías en general:</label>
+                    <textarea id="historial-cirugias" rows="3"
+                        placeholder="Detalle intervenciones quirúrgicas o ingresos hospitalarios recientes..."></textarea>
+                </div>
+
+                <!-- HÁBITOS -->
+                <div class="margin-top-large">
+                    <div class="table-title-header">Hábitos y Estado Fisiológico</div>
+                    <div class="grid-col-3"
+                        style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div class="input-group" style="margin-bottom:0;">
+                            <label>¿Fuma?</label>
+                            <div class="radio-group" style="margin-top:5px;">
+                                <label class="radio-option"><input type="radio" name="hab-fuma"
+                                        value="SI"><span>SÍ</span></label>
+                                <label class="radio-option"><input type="radio" name="hab-fuma" value="NO"
+                                        checked><span>NO</span></label>
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-bottom:0;">
+                            <label>¿Consume alucinógenos (drogas)?</label>
+                            <div class="radio-group" style="margin-top:5px;">
+                                <label class="radio-option"><input type="radio" name="hab-drogas"
+                                        value="SI"><span>SÍ</span></label>
+                                <label class="radio-option"><input type="radio" name="hab-drogas" value="NO"
+                                        checked><span>NO</span></label>
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-bottom:0;">
+                            <label>¿Consume alcohol?</label>
+                            <div class="radio-group" style="margin-top:5px;">
+                                <label class="radio-option"><input type="radio" name="hab-alcohol"
+                                        value="SI"><span>SÍ</span></label>
+                                <label class="radio-option"><input type="radio" name="hab-alcohol" value="NO"
+                                        checked><span>NO</span></label>
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-bottom:0;">
+                            <label>¿Se encuentra en embarazo?</label>
+                            <div class="radio-group" style="margin-top:5px;">
+                                <label class="radio-option"><input type="radio" name="hab-embarazo"
+                                        value="SI"><span>SÍ</span></label>
+                                <label class="radio-option"><input type="radio" name="hab-embarazo" value="NO"
+                                        checked><span>NO</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEDICAMENTOS ACTUALES -->
+                <div class="input-group margin-top-large">
+                    <label for="medicamentos-actuales">Prescripciones y medicamentos actuales:</label>
+                    <textarea id="medicamentos-actuales" rows="3"
+                        placeholder="Escriba aquí si está tomando algún medicamento recetado..."></textarea>
+                </div>
+            </section>
+
+            <!-- ACUDIENTE CONDITIONAL -->
+            <section class="form-section card-style">
+                <h2 class="section-title">5. Autorización de Menor de Edad</h2>
+                <div class="form-group">
+                    <div class="question-row flex-start">
+                        <span class="question-text">¿El cliente es menor de edad? <span class="required">*</span></span>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="menor-edad" value="SI"
+                                    id="menor-si"><span>SÍ</span></label>
+                            <label class="radio-option"><input type="radio" name="menor-edad" value="NO" id="menor-no"
+                                    checked><span>NO</span></label>
+                        </div>
+                    </div>
+                    <div class="conditional-input" id="conditional-acudiente">
+                        <label for="acudiente-autorizacion">Autorización del Acudiente (Nombre y Cédula del tutor legal)
+                            <span class="required">*</span></label>
+                        <input type="text" id="acudiente-autorizacion" placeholder="Ej. María Pérez - C.C. 10203040">
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIAGNÓSTICO PROFESIONAL -->
+            <section class="form-section card-style manicurist-section">
+                <h2 class="section-title">6. Diagnóstico y Observaciones de la Profesional</h2>
+                <p class="section-desc">Sección obligatoria para ser rellenada por la pedicurista a cargo.</p>
+
+                <div class="input-group">
+                    <label for="prof-resultados">Manifestación de resultados según las circunstancias explicadas y
+                        patologías identificadas:</label>
+                    <textarea id="prof-resultados" rows="3"
+                        placeholder="Dadas las circunstancias explicadas y patologías/síntomas descritos, se prevé que los resultados del procedimiento sean..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="prof-recomendaciones">Recomendaciones adicionales de la profesional:</label>
+                    <textarea id="prof-recomendaciones" rows="3"
+                        placeholder="Recomendaciones de cuidado e higiene personal en casa..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="prof-observaciones">Observaciones adicionales:</label>
+                    <textarea id="prof-observaciones" rows="3"
+                        placeholder="Otras anotaciones del servicio en el pie afectado..."></textarea>
+                </div>
+            </section>
+
+            <!-- DATE AND SEDE -->
+            <section class="form-section card-style">
+                <h2 class="section-title">7. Fecha y Sede del Procedimiento</h2>
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label>Ciudad de Suscripción</label>
+                        <input type="text" id="documento-ciudad" value="Bogotá, D.C." readonly class="readonly-input">
+                    </div>
+                    <div class="input-group">
+                        <label for="documento-fecha">Fecha del Servicio <span class="required">*</span></label>
+                        <input type="date" id="documento-fecha" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="documento-sede">Sede <span class="required">*</span></label>
+                        <input type="text" id="documento-sede" required placeholder="Nombre o número de la sede">
+                    </div>
+                </div>
+            </section>
+
+            <!-- FIRMAS -->
+            <section class="form-section card-style signatures-section">
+                <h2 class="section-title">8. Firmas de Aceptación</h2>
+                <p class="legal-declaration-summary">
+                    Declaro que he tenido el tiempo necesario para leer y comprender el presente consentimiento el cual
+                    firmo de manera voluntaria dando mi consentimiento para que la Profesional y el personal auxiliar si
+                    así se precisa me efectúen los procedimientos que solicite.
+                </p>
+
+                <div class="signatures-grid">
+
+                    <!-- Gerente General (Autorizada/Estampada) -->
+                    <div class="signature-card official-signature">
+                        <div class="signature-canvas-container">
+                            <div class="ceo-signature-stamp">
+                                <span class="ceo-script">Lizeth Valeria Chacón Sánchez</span>
+                                <div class="ceo-stamp-text">Representante Legal</div>
+                            </div>
+                        </div>
+                        <div class="signature-info">
+                            <span class="sign-name">Lizeth Valeria Chacón Sánchez</span>
+                            <span class="sign-role">Gerente General</span>
+                            <span class="sign-company">El imperio de las uñas by Paula SAS</span>
+                        </div>
+                    </div>
+
+                    <!-- Profesional Pedicurista -->
+                    <div class="signature-card">
+                        <div class="signature-canvas-container">
+                            <canvas id="canvas-professional" width="300" height="120"></canvas>
+                            <button type="button" class="btn-clear-sig"
+                                data-canvas="canvas-professional">Limpiar</button>
+                        </div>
+                        <div class="signature-info">
+                            <input type="text" id="nombre-profesional" required placeholder="Nombre de la Pedicurista"
+                                class="inline-signature-input">
+                            <span class="sign-role">Profesional Pedicurista</span>
+                        </div>
+                    </div>
+
+                    <!-- Cliente o Acudiente -->
+                    <div class="signature-card">
+                        <div class="signature-canvas-container">
+                            <canvas id="canvas-client" width="300" height="120"></canvas>
+                            <button type="button" class="btn-clear-sig" data-canvas="canvas-client">Limpiar</button>
+                        </div>
+                        <div class="signature-info">
+                            <input type="text" id="nombre-firma-cliente" required placeholder="Nombre de quien firma"
+                                class="inline-signature-input">
+                            <span class="sign-role">Cliente y/o Acudiente</span>
+                            <div class="flex-row inline-cc">
+                                <label for="cc-firma-cliente">C.C./ID:</label>
+                                <input type="text" id="cc-firma-cliente" required placeholder="Número de Documento"
+                                    class="inline-signature-input short">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ACTION BUTTONS -->
+            <div class="actions-panel no-print">
+                <button type="button" id="btn-print" class="btn-primary">
+                    <span class="btn-icon">🖨️</span> Guardar y Generar PDF / Imprimir
+                </button>
+                <button type="reset" id="btn-reset" class="btn-secondary">
+                    Reestablecer Formulario
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app3.js"></script>
+</body>
+
+</html>
