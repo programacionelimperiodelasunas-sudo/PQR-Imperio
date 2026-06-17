@@ -705,18 +705,30 @@
                 document.getElementById("modal-obs-anom").innerText = "Sin anomalías.";
             }
 
-            // Signatures rendering (support real Base64 drawing images)
+            // Signatures rendering (support real Base64 drawing images or R2 URLs)
             const sigClient = document.getElementById("modal-sig-client");
-            if (rec.firma_cliente && rec.firma_cliente.startsWith("data:image/")) {
-                sigClient.innerHTML = `<img src="${rec.firma_cliente}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Cliente">`;
+            if (rec.firma_cliente) {
+                if (rec.firma_cliente.startsWith("data:image/")) {
+                    sigClient.innerHTML = `<img src="${rec.firma_cliente}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Cliente">`;
+                } else if (rec.firma_cliente.startsWith("/api/signatures/")) {
+                    sigClient.innerHTML = `<img src="${API_URL}${rec.firma_cliente}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Cliente">`;
+                } else {
+                    sigClient.innerText = rec.nombre_cliente.split(' ')[0] || "Firma";
+                }
             } else {
                 sigClient.innerText = rec.nombre_cliente.split(' ')[0] || "Firma";
             }
             document.getElementById("modal-sig-client-name").innerText = rec.nombre_cliente;
 
             const sigProf = document.getElementById("modal-sig-prof");
-            if (rec.firma_profesional && rec.firma_profesional.startsWith("data:image/")) {
-                sigProf.innerHTML = `<img src="${rec.firma_profesional}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Profesional">`;
+            if (rec.firma_profesional) {
+                if (rec.firma_profesional.startsWith("data:image/")) {
+                    sigProf.innerHTML = `<img src="${rec.firma_profesional}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Profesional">`;
+                } else if (rec.firma_profesional.startsWith("/api/signatures/")) {
+                    sigProf.innerHTML = `<img src="${API_URL}${rec.firma_profesional}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Profesional">`;
+                } else {
+                    sigProf.innerText = rec.nombre_prof.split(' ')[0] || "Firma";
+                }
             } else {
                 sigProf.innerText = rec.nombre_prof.split(' ')[0] || "Firma";
             }
