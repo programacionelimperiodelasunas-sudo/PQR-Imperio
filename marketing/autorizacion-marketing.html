@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autorización de Uso de Imagen y Voz - Marketing y Podcast</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Alex+Brush&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../uñas/style.css">
+    <style>
+        .nav-tabs {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="no-print" style="margin-bottom: 20px;">
+            <a href="../index.html" class="nav-tab"
+                style="display: inline-flex; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px;">
+                <span>← Volver al Portal</span>
+            </a>
+        </div>
+
+        <header class="main-header">
+            <div class="brand-badge">Documento de Autorización</div>
+            <h1 class="brand-title">El Imperio de las Uñas</h1>
+            <p class="brand-subtitle">BY PAULA SAS • NIT 901396476 - 1</p>
+            <div class="document-reference">Autorización para Uso de Imagen, Voz, Datos Personales y Cesión de Derechos Patrimoniales</div>
+        </header>
+
+        <form id="consent-form" class="consent-form" onsubmit="event.preventDefault();">
+
+            <!-- SECTION 1: DATOS PERSONALES -->
+            <section class="form-section card-style">
+                <h2 class="section-title">1. Datos del Colaborador / Participante</h2>
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label for="colaborador-nombre">Yo, (Nombre Completo) <span class="required">*</span></label>
+                        <input type="text" id="colaborador-nombre" required
+                            placeholder="Nombre completo del colaborador">
+                    </div>
+                    <div class="input-group">
+                        <label for="colaborador-tipo-doc">Identificado con <span class="required">*</span></label>
+                        <select id="colaborador-tipo-doc" required>
+                            <option value="" disabled selected>Seleccione tipo...</option>
+                            <option value="C.C.">Cédula de Ciudadanía (C.C.)</option>
+                            <option value="C.E.">Cédula de Extranjería (C.E.)</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="colaborador-numero-doc">Número de Documento <span class="required">*</span></label>
+                        <input type="text" id="colaborador-numero-doc" required placeholder="Número de identificación">
+                    </div>
+                </div>
+
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label for="colaborador-expedicion">Expedido en <span class="required">*</span></label>
+                        <input type="text" id="colaborador-expedicion" required placeholder="Ciudad de expedición">
+                    </div>
+                    <div class="input-group">
+                        <label for="colaborador-telefono">Teléfono / WhatsApp <span class="required">*</span></label>
+                        <input type="tel" id="colaborador-telefono" required placeholder="Número telefónico">
+                    </div>
+                    <div class="input-group">
+                        <label for="colaborador-email">Correo Electrónico <span class="required">*</span></label>
+                        <input type="email" id="colaborador-email" required placeholder="correo@ejemplo.com"
+                            style="font-family: 'Montserrat', sans-serif; padding: 12px 16px; border: 1.5px solid var(--border-color); border-radius: 8px; font-size: 0.95rem; background-color: var(--background); color: var(--dark);">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: AUTORIZACIÓN LEGAL -->
+            <section class="form-section card-style legal-declarations">
+                <h2 class="section-title">2. Declaración de Autorización y Cesión</h2>
+                <div class="legal-text-container" style="max-height: 350px;">
+                    <p class="highlight-p">
+                        Manifiesto que he sido informado(a) de manera clara y expresa sobre el tratamiento que se dará a mi imagen, voz y datos personales en el marco de mi participación en las piezas publicitarias, videográficas y demás desarrollos que se efectúen en calidad de colaborador y que sean desarrollados por EL IMPERIO DE LAS UÑAS BY PAULA S.A.S.
+                    </p>
+                    <p>
+                        En virtud de lo anterior, otorgo mi autorización libre, previa, expresa e informada para lo siguiente:
+                    </p>
+                    
+                    <p><strong>PRIMERO. OBJETO DE LA AUTORIZACIÓN:</strong> Autorizo a EL IMPERIO DE LAS UÑAS BY PAULA S.A.S para:</p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Grabar, registrar, reproducir y utilizar mi imagen, voz, nombre y cualquier manifestación verbal o no verbal realizada durante mi participación en el podcast.</li>
+                        <li>Realizar la edición, adaptación, transformación, reproducción, distribución, comunicación pública, almacenamiento, archivo, publicación y cualquier otro uso del contenido grabado, en cualquier formato o medio, físico o digital, conocido o por conocerse.</li>
+                        <li>Utilizar el contenido con fines informativos, educativos, promocionales, comerciales o de archivo, sin limitación territorial ni temporal.</li>
+                    </ul>
+
+                    <p><strong>SEGUNDO. CESIÓN DE DERECHOS PATRIMONIALES:</strong> Cedo de manera gratuita, irrevocable y sin limitación territorial ni temporal, los derechos patrimoniales de autor que me correspondan sobre el contenido generado durante mi participación, a favor de EL IMPERIO DE LAS UÑAS BY PAULA S.A.S, quien podrá explotarlo directamente o a través de terceros.</p>
+
+                    <p><strong>TERCERO. FINALIDADES DEL TRATAMIENTO:</strong> Autorizo el tratamiento de mis datos para las siguientes finalidades específicas:</p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Producción de contenido audiovisual (podcast, videos, redes sociales)</li>
+                        <li>Difusión en plataformas digitales (Instagram, TikTok, YouTube, web, pauta publicitaria)</li>
+                        <li>Estrategias de marketing y posicionamiento de marca</li>
+                        <li>Archivo histórico y memoria corporativa</li>
+                        <li>Actividades educativas y formativas del sector belleza</li>
+                    </ul>
+
+                    <p><strong>CUARTO. AUSENCIA DE REMUNERACIÓN:</strong> Declaro que mi participación es voluntaria y que no recibiré contraprestación económica alguna, presente o futura, por el uso del contenido grabado.</p>
+
+                    <p><strong>QUINTO. PROTECCIÓN DE DATOS PERSONALES:</strong> Autorizo el tratamiento de mis datos personales conforme a la Ley 1581 de 2012 y demás normas aplicables, exclusivamente para los fines relacionados con la producción, publicación y difusión del podcast. Podré ejercer mis derechos de acceso, rectificación, cancelación y oposición mediante solicitud escrita dirigida a habeasdata@imperiodelasunas.com</p>
+
+                    <p><strong>SEXTO. DIFUSIÓN (TRANSFERENCIA Y TRANSMISIÓN):</strong> Autorizo la transferencia nacional e internacional de mis datos, siempre bajo estándares de protección legal a:</p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Plataformas digitales</li>
+                        <li>Aliados comerciales</li>
+                        <li>Proveedores tecnológicos</li>
+                    </ul>
+
+                    <p><strong>SÉPTIMO. CONFIDENCIALIDAD:</strong> Me comprometo a mantener la confidencialidad sobre cualquier información sensible, técnica, creativa o de producción a la que tenga acceso durante mi participación, y a no divulgarla sin autorización previa y por escrito de EL IMPERIO DE LAS UÑAS BY PAULA S.A.S. Esta obligación se mantendrá vigente incluso después de finalizada mi participación.</p>
+
+                    <p><strong>OCTAVO. USO RESPONSABLE DEL CONTENIDO:</strong> El uso del contenido se realizará dentro del marco legal, respetando derechos fundamentales y sin afectar honra ni buen nombre.</p>
+
+                    <p><strong>NOVENO. EXCLUSIÓN DE RESPONSABILIDAD:</strong> EL IMPERIO DE LAS UÑAS no será responsable por interpretaciones, ediciones, adaptaciones o usos del contenido grabado que se realicen dentro del marco legal y sin vulnerar derechos fundamentales. Asimismo, exonera al productor de cualquier reclamación derivada del uso autorizado del contenido, siempre que dicho uso no contravenga la ley ni afecte su honra, buen nombre o integridad personal.</p>
+
+                    <p><strong>DÉCIMO. DECLARACIÓN FINAL:</strong> Declaro que he leído, comprendido y aceptado en su totalidad los términos de esta autorización, y que la misma se otorga de manera libre y voluntaria.</p>
+
+                    <p><strong>DÉCIMO PRIMERO. REVOCATORIA:</strong> Podré revocar esta autorización en cualquier momento, salvo cuando exista obligación legal o contractual, o cuando el contenido ya haya sido difundido públicamente.</p>
+                </div>
+                <div class="consent-check-wrapper">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="acepta-datos-colaborador" required>
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">Autorizo de forma libre, previa, expresa e informada el uso de mi imagen, voz, datos personales y la cesión de derechos patrimoniales para fines de marketing y podcast conforme a las finalidades indicadas. <span class="required">*</span></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- SECTION 3: DATE AND SIGNATURE -->
+            <section class="form-section card-style">
+                <h2 class="section-title">3. Fecha y Suscripción del Consentimiento</h2>
+                <div class="grid-col-3" style="margin-bottom: 30px;">
+                    <div class="input-group">
+                        <label>Ciudad</label>
+                        <input type="text" value="Bogotá, D.C." readonly class="readonly-input">
+                    </div>
+                    <div class="input-group">
+                        <label for="documento-fecha">Fecha de Firma <span class="required">*</span></label>
+                        <input type="date" id="documento-fecha" required>
+                    </div>
+                </div>
+
+                <div class="signatures-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                    <div class="signature-card official-signature">
+                        <div class="signature-canvas-container">
+                            <div class="ceo-signature-stamp">
+                                <span class="ceo-script">Lizeth Valeria Chacón Sánchez</span>
+                                <div class="ceo-stamp-text">Representante Legal</div>
+                            </div>
+                        </div>
+                        <div class="signature-info">
+                            <span class="sign-name">Lizeth Valeria Chacón Sánchez</span>
+                            <span class="sign-role">Gerente General</span>
+                            <span class="sign-company">El Imperio de las Uñas By Paula SAS</span>
+                        </div>
+                    </div>
+
+                    <div class="signature-card">
+                        <div class="signature-canvas-container">
+                            <canvas id="canvas-collaborator" width="350" height="120"></canvas>
+                            <button type="button" class="btn-clear-sig" data-canvas="canvas-collaborator">Limpiar</button>
+                        </div>
+                        <div class="signature-info">
+                            <input type="text" id="nombre-firma-colaborador" required
+                                placeholder="Nombre del Colaborador" class="inline-signature-input">
+                            <span class="sign-role">Firma del Colaborador / Participante</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="actions-panel no-print">
+                <button type="button" id="btn-print" class="btn-primary">
+                    <span class="btn-icon">🖨️</span> Guardar y Generar PDF / Imprimir
+                </button>
+                <button type="reset" id="btn-reset" class="btn-secondary">
+                    Reestablecer Formulario
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

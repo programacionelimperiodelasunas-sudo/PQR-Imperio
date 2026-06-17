@@ -98,14 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const contractorPad = new SignaturePad("canvas-contractor");
+    const collaboratorPad = new SignaturePad("canvas-collaborator");
 
     // Clear buttons
     document.querySelectorAll(".btn-clear-sig").forEach(button => {
         button.addEventListener("click", () => {
             const canvasId = button.getAttribute("data-canvas");
-            if (canvasId === "canvas-contractor" && contractorPad) {
-                contractorPad.clear();
+            if (canvasId === "canvas-collaborator" && collaboratorPad) {
+                collaboratorPad.clear();
             }
         });
     });
@@ -123,8 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // Verify signature validation
-            if (contractorPad && !contractorPad.hasSigned) {
-                alert("Por favor, el contratista o manicurista debe firmar el documento.");
+            if (collaboratorPad && !collaboratorPad.hasSigned) {
+                alert("Por favor, el colaborador o participante debe firmar el documento.");
                 return;
             }
 
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Reset form and UI states
             consentForm.reset();
-            if (contractorPad) contractorPad.clear();
+            if (collaboratorPad) collaboratorPad.clear();
 
             // Re-initialize date
             if (dateInput) {
@@ -144,6 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (dd < 10) dd = '0' + dd;
                 if (mm < 10) mm = '0' + mm;
                 dateInput.value = `${yyyy}-${mm}-${dd}`;
+            }
+        });
+    }
+
+    // Reset button signature clear
+    const btnReset = document.getElementById("btn-reset");
+    if (btnReset) {
+        btnReset.addEventListener("click", () => {
+            if (collaboratorPad) {
+                collaboratorPad.clear();
             }
         });
     }

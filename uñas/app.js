@@ -275,6 +275,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 alert("¡Registro guardado con éxito en la base de datos!");
                 window.print();
+
+                // Reset form and UI states
+                consentForm.reset();
+                if (professionalPad) professionalPad.clear();
+                if (clientPad) clientPad.clear();
+
+                // Re-initialize date
+                if (dateInput) {
+                    const today = new Date();
+                    const yyyy = today.getFullYear();
+                    let mm = today.getMonth() + 1;
+                    let dd = today.getDate();
+                    if (dd < 10) dd = '0' + dd;
+                    if (mm < 10) mm = '0' + mm;
+                    dateInput.value = `${yyyy}-${mm}-${dd}`;
+                }
+
+                // Reset procedure items active state
+                document.querySelectorAll(".procedure-item").forEach(item => {
+                    item.classList.remove("active");
+                    const nestedConfirm = item.querySelector(".proc-confirm");
+                    if (nestedConfirm) {
+                        nestedConfirm.required = false;
+                    }
+                });
+
+                // Reset conditional sections
+                toggleEnfermedad();
+                toggleAcudiente();
             } catch (err) {
                 console.error(err);
                 alert("Ocurrió un error al guardar en la base de datos: " + err.message);
