@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const API_URL = "http://localhost:8787"; // Cambiar por tu URL de Cloudflare Worker en producción
+
     // 1. AUTO-SET DATE
     const dateInput = document.getElementById("documento-fecha");
     if (dateInput) {
@@ -33,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 3. CONDITIONAL INPUTS
-    // base diseases conditional
     const enfSi = document.getElementById("enf-si");
     const enfNo = document.getElementById("enf-no");
     const condEnfermedad = document.getElementById("conditional-enfermedad");
@@ -56,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
         enfNo.addEventListener("change", toggleEnfermedad);
     }
 
-    // minor age conditional
     const menorSi = document.getElementById("menor-si");
     const menorNo = document.getElementById("menor-no");
     const condAcudiente = document.getElementById("conditional-acudiente");
@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
             this.drawing = false;
             this.hasSigned = false;
 
-            // Setup line style
             this.ctx.strokeStyle = "#1a1a1a";
             this.ctx.lineJoin = "round";
             this.ctx.lineCap = "round";
@@ -98,13 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         initEvents() {
-            // Mouse events
             this.canvas.addEventListener("mousedown", (e) => this.startDrawing(e));
             this.canvas.addEventListener("mousemove", (e) => this.draw(e));
             this.canvas.addEventListener("mouseup", () => this.stopDrawing());
             this.canvas.addEventListener("mouseout", () => this.stopDrawing());
 
-            // Touch events
             this.canvas.addEventListener("touchstart", (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
@@ -125,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.canvas.dispatchEvent(mouseEvent);
             }, { passive: false });
 
-            this.canvas.addEventListener("touchend", (e) => {
+            this.canvas.addEventListener("touchend", () => {
                 const mouseEvent = new MouseEvent("mouseup", {});
                 this.canvas.dispatchEvent(mouseEvent);
             });
@@ -133,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         getMousePos(e) {
             const rect = this.canvas.getBoundingClientRect();
-            // Accounts for client coordinates vs canvas viewport
             return {
                 x: e.clientX - rect.left,
                 y: e.clientY - rect.top
@@ -168,7 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const professionalPad = new SignaturePad("canvas-professional");
     const clientPad = new SignaturePad("canvas-client");
 
-    // Clear buttons
     document.querySelectorAll(".btn-clear-sig").forEach(button => {
         button.addEventListener("click", () => {
             const canvasId = button.getAttribute("data-canvas");
@@ -185,21 +180,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const consentForm = document.getElementById("consent-form");
 
     if (btnPrint && consentForm) {
-        btnPrint.addEventListener("click", () => {
-            // Check form validations (HTML5 required attributes)
+        btnPrint.addEventListener("click", async () => {
             if (!consentForm.checkValidity()) {
                 consentForm.reportValidity();
                 return;
             }
 
-            // Check if at least one procedure is checked
             const checkedProcs = Array.from(procedureCheckboxes).filter(cb => cb.checked);
             if (checkedProcs.length === 0) {
                 alert("Por favor, seleccione al menos un procedimiento a realizar.");
                 return;
             }
 
-            // Verify signature validations
             if (professionalPad && !professionalPad.hasSigned) {
                 alert("Por favor, la profesional manicurista debe firmar el documento.");
                 return;
@@ -210,36 +202,86 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Save record to localStorage for Cashier Panel
+            // Disable button during saving to prevent double submission
+            btnPrint.disabled = true;
+            const originalText = btnPrint.innerHTML;
+            btnPrint.innerText = "Guardando en base de datos...";
+
             try {
-                const record = {
-                    id: Date.now(),
+                // Parse anomalies
+                const anomalias_unas = [];
+                const anomalyRows = document.querySelectorAll(".anomalies-table tbody tr");
+                anomalyRows.forEach(row => {
+                    const tipo = row.getAttribute("data-anomaly");
+                    const manos = Array.from(row.querySelectorAll('input[name$="-mano"]:checked')).map(cb => cb.value);
+                    const dedos = Array.from(row.querySelectorAll('input[name$="-dedos"]:checked')).map(cb => cb.value);
+                    
+                    if (manos.length > 0 && dedos.length > 0) {
+                        manos.forEach(mano => {
+                            dedos.forEach(dedo => {
+                                anomalias_unas.push({ tipo_anomalia: tipo, mano, dedo });
+                            });
+                        });
+                    }
+                });
+
+                // Construct full API payload
+                const payload = {
                     tipo_pqr: "Uñas Artificiales",
                     nombre_cliente: document.getElementById("cliente-nombre").value,
                     tipo_documento: document.getElementById("cliente-tipo-doc").value,
                     documento: document.getElementById("cliente-numero-doc").value,
+                    ciudad_expedicion: document.getElementById("cliente-expedicion").value,
                     telefono: document.getElementById("cliente-telefono").value,
-                    es_menor_edad: document.querySelector('input[name="menor-edad"]:checked')?.value === "SI" ? 1 : 0,
-                    acudiente_autorizacion: document.getElementById("acudiente-autorizacion")?.value || "",
-                    tiene_enfermedad: document.querySelector('input[name="enfermedad-base"]:checked')?.value === "SI" ? 1 : 0,
-                    enfermedad_detalle: document.getElementById("enfermedad-detalle")?.value || "",
-                    fecha_registro: document.getElementById("documento-fecha").value,
+                    es_menor_edad: document.querySelector('input[name="menor-edad"]:checked')?.value === "SI",
+                    acudiente_autorizacion: document.getElementById("acudiente-autorizacion")?.value || null,
+                    tiene_enfermedad: document.querySelector('input[name="enfermedad-base"]:checked')?.value === "SI",
+                    enfermedad_detail: document.getElementById("enfermedad-detail")?.value || null, // API handles fallback
+                    enfermedad_detalle: document.getElementById("enfermedad-detalle")?.value || null,
                     sede: document.getElementById("documento-sede").value,
                     nombre_prof: document.getElementById("nombre-profesional").value,
-                    procedimientos: checkedProcs.map(cb => cb.closest(".procedure-item").querySelector(".procedure-title").innerText),
-                    resultados: document.getElementById("prof-resultados").value,
-                    recomendaciones: document.getElementById("prof-recomendaciones").value,
-                    observaciones: document.getElementById("prof-observaciones").value
+                    firma_profesional: professionalPad.canvas.toDataURL("image/png"),
+                    firma_cliente: clientPad.canvas.toDataURL("image/png"),
+                    
+                    detalles_unas: {
+                        proc_manicura_rusa: document.getElementById("proc-manicura-rusa").checked,
+                        proc_acrilico: document.getElementById("proc-acrilico").checked,
+                        proc_polygel: document.getElementById("proc-polygel").checked,
+                        proc_rubber: document.getElementById("proc-rubber").checked,
+                        proc_retoques: document.getElementById("proc-retoques").checked,
+                        proc_retiro: document.getElementById("proc-retiro").checked,
+                        proc_onicofagia: document.getElementById("proc-onicofagia").checked,
+                        uñas_otro_lado: document.querySelector('input[name="uñas-otro-lado"]:checked')?.value === "SI",
+                        retiro_otro_lado: document.querySelector('input[name="retiro-otro-lado"]:checked')?.value === "SI"
+                    },
+                    anomalias_unas,
+                    observaciones_prof: {
+                        patologia_detectada: document.getElementById("prof-observaciones").value || "Ninguna",
+                        recomendaciones: document.getElementById("prof-recomendaciones").value || "Ninguna",
+                        adicionales: document.getElementById("prof-resultados").value || "Ninguna"
+                    }
                 };
-                const records = JSON.parse(localStorage.getItem("pqrs_records") || "[]");
-                records.push(record);
-                localStorage.setItem("pqrs_records", JSON.stringify(records));
-            } catch (err) {
-                console.error("Error saving record to localStorage:", err);
-            }
 
-            // All validation passed, trigger native print view
-            window.print();
+                const res = await fetch(`${API_URL}/api/registros`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.error || "Error al guardar el registro");
+                }
+
+                alert("¡Registro guardado con éxito en la base de datos!");
+                window.print();
+            } catch (err) {
+                console.error(err);
+                alert("Ocurrió un error al guardar en la base de datos: " + err.message);
+            } finally {
+                btnPrint.disabled = false;
+                btnPrint.innerHTML = originalText;
+            }
         });
     }
 });

@@ -522,10 +522,10 @@
         </div>
     </div>
 
-    <!-- Script to simulate database rows -->
+    <!-- Script to connect to API -->
     <script>
-        // Load data from localStorage dynamically
-        const mockRecords = JSON.parse(localStorage.getItem("pqrs_records") || "[]");
+        const API_URL = "http://localhost:8787"; // Cambiar por tu URL de Cloudflare Worker en producción
+        let allRecords = [];
 
         // Elements
         const tableBody = document.getElementById("table-body");
@@ -534,6 +534,19 @@
         const sedeSelect = document.getElementById("filter-sede");
         const detailsModal = document.getElementById("details-modal");
         const closeModalBtn = document.getElementById("close-modal-btn");
+
+        // Load data from API
+        async function fetchRecords() {
+            try {
+                const res = await fetch(`${API_URL}/api/registros`);
+                if (!res.ok) throw new Error("Error al consultar la base de datos");
+                allRecords = await res.json();
+                applyFilters();
+            } catch (err) {
+                console.error(err);
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #d81b60; padding: 30px;">Error al conectar con la API: ${err.message}</td></tr>`;
+            }
+        }
 
         // Populate Table
         function renderTable(records) {
@@ -549,17 +562,23 @@
                 if (rec.tipo_pqr === "Cejas y Pestañas") badgeClass = "badge-cejas";
                 if (rec.tipo_pqr === "Pedicura Especializada") badgeClass = "badge-pedi";
 
+                // Format date nicely
+                const rawDate = new Date(rec.fecha_registro);
+                const formattedDate = isNaN(rawDate) ? rec.fecha_registro : rawDate.toLocaleDateString('es-ES', {
+                    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+                });
+
                 tr.innerHTML = `
                     <td><strong>#${rec.id}</strong></td>
-                    <td>${rec.fecha_registro}</td>
+                    <td>${formattedDate}</td>
                     <td>${rec.nombre_cliente} ${rec.es_menor_edad ? '<span class="badge" style="background:#e0f2f1; color:#00695c; padding:2px 6px; font-size:0.65rem;">Menor</span>' : ''}</td>
-                    <td>${rec.tipo_documento} ${rec.documento}</td>
+                    <td>${rec.documento}</td>
                     <td><span class="badge ${badgeClass}">${rec.tipo_pqr}</span></td>
                     <td>${rec.nombre_prof}</td>
                     <td>${rec.sede}</td>
                 `;
 
-                tr.addEventListener("click", () => showRecordDetails(rec));
+                tr.addEventListener("click", () => fetchAndShowDetails(rec.id));
                 tableBody.appendChild(tr);
             });
         }
@@ -570,10 +589,10 @@
             const service = serviceSelect.value;
             const sede = sedeSelect.value;
 
-            const filtered = mockRecords.filter(rec => {
-                const matchQuery = rec.nombre_cliente.toLowerCase().includes(query) ||
-                    rec.documento.includes(query) ||
-                    rec.nombre_prof.toLowerCase().includes(query);
+            const filtered = allRecords.filter(rec => {
+                const matchQuery = (rec.nombre_cliente || "").toLowerCase().includes(query) ||
+                    (rec.documento || "").includes(query) ||
+                    (rec.nombre_prof || "").toLowerCase().includes(query);
                 const matchService = service === "todos" || rec.tipo_pqr === service;
                 const matchSede = sede === "todos" || rec.sede === sede;
 
@@ -591,8 +610,18 @@
             document.getElementById("stat-pedicura").innerText = records.filter(r => r.tipo_pqr === "Pedicura Especializada").length;
         }
 
-        // Show Details Modal
-        // Show Details Modal
+        // Fetch detailed record and show Modal
+        async function fetchAndShowDetails(id) {
+            try {
+                const res = await fetch(`${API_URL}/api/registros/${id}`);
+                if (!res.ok) throw new Error("No se pudo obtener el detalle de la PQR");
+                const rec = await res.json();
+                showRecordDetails(rec);
+            } catch (err) {
+                alert("Error al cargar detalles: " + err.message);
+            }
+        }
+
         function showRecordDetails(rec) {
             document.getElementById("modal-client-name").innerText = rec.nombre_cliente;
             document.getElementById("modal-service-badge").innerText = rec.tipo_pqr;
@@ -604,7 +633,12 @@
             if (rec.tipo_pqr === "Cejas y Pestañas") badge.style.background = "#e8eaf6";
             if (rec.tipo_pqr === "Pedicura Especializada") badge.style.background = "#e8f5e9";
 
-            document.getElementById("modal-date-location").innerText = `${rec.sede} • Registrado el ${rec.fecha_registro}`;
+            const rawDate = new Date(rec.fecha_registro);
+            const formattedDate = isNaN(rawDate) ? rec.fecha_registro : rawDate.toLocaleDateString('es-ES', {
+                year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+
+            document.getElementById("modal-date-location").innerText = `${rec.sede} • Registrado el ${formattedDate}`;
             document.getElementById("modal-client-doc").innerText = `${rec.tipo_documento} ${rec.documento}`;
             document.getElementById("modal-client-phone").innerText = rec.telefono;
             document.getElementById("modal-prof-name").innerText = rec.nombre_prof;
@@ -614,33 +648,82 @@
             const healthAlert = document.getElementById("modal-health-alert");
             if (rec.tiene_enfermedad) {
                 healthAlert.style.display = "block";
-                document.getElementById("modal-health-detail").innerText = rec.enfermedad_detalle;
+                document.getElementById("modal-health-detail").innerText = rec.enfermedad_detalle || "El cliente manifiesta enfermedades de base.";
             } else {
                 healthAlert.style.display = "none";
             }
 
-            // Procedures
+            // Procedures Mapping
             const proceduresList = document.getElementById("modal-procedures-list");
             proceduresList.innerHTML = "";
-            rec.procedimientos.forEach(p => {
+            const procedures = [];
+
+            if (rec.tipo_pqr === "Uñas Artificiales" && rec.detalles_unas) {
+                const du = rec.detalles_unas;
+                if (du.proc_manicura_rusa) procedures.push("Manicura Rusa");
+                if (du.proc_acrilico) procedures.push("Uñas en Acrílico");
+                if (du.proc_polygel) procedures.push("Uñas en Polygel");
+                if (du.proc_rubber) procedures.push("Uñas Base Rubber");
+                if (du.proc_retoques) procedures.push("Retoque de Sistemas");
+                if (du.proc_retiro) procedures.push("Retiro de Sistemas");
+                if (du.proc_onicofagia) procedures.push("Uñas en Condición de Onicofagia");
+            } else if (rec.tipo_pqr === "Cejas y Pestañas" && rec.detalles_cejas) {
+                const dc = rec.detalles_cejas;
+                if (dc.proc_depilacion) procedures.push("Depilación con Sombreado Bigen");
+                if (dc.proc_pestañas) procedures.push("Aplicación de Pestañas Pelo a Pelo / Volumen");
+                if (dc.proc_laminado) procedures.push("Laminado de Cejas");
+                if (dc.proc_lifting) procedures.push("Lifting de Pestañas");
+                if (dc.proc_micropigmentacion) procedures.push("Micropigmentación de Cejas");
+                if (dc.proc_retiro_de_pestañas) procedures.push("Retiro de Pestañas Artificiales");
+            } else if (rec.tipo_pqr === "Pedicura Especializada" && rec.detalles_pedicure) {
+                const dp = rec.detalles_pedicure;
+                if (dp.proc_esmalte) procedures.push("Pedicura con Esmalte Tradicional / Semipermanente");
+                if (dp.proc_reconstruccion) procedures.push("Pedicura con Reconstrucción");
+                if (dp.proc_onicocriptosis) procedures.push("Pedicura con Onicocriptosis");
+                if (dp.proc_posible_onicomicosis) procedures.push("Pedicura con Posible Onicomicosis");
+            }
+
+            if (procedures.length === 0) {
+                procedures.push("Ningún procedimiento específico registrado");
+            }
+
+            procedures.forEach(p => {
                 const li = document.createElement("li");
                 li.innerHTML = `<strong>${p}</strong> - Consentimiento y explicación de riesgos firmada y aceptada.`;
                 proceduresList.appendChild(li);
             });
 
-            // Observations
-            document.getElementById("modal-obs-results").innerText = rec.resultados || "Sin observaciones registradas.";
-            document.getElementById("modal-obs-recs").innerText = rec.recomendaciones || "Sin recomendaciones específicas.";
-            document.getElementById("modal-obs-anom").innerText = rec.observaciones || "Sin anomalías aparentes.";
+            // Observations & Diagnoses
+            if (rec.observaciones_prof) {
+                const op = rec.observaciones_prof;
+                document.getElementById("modal-obs-results").innerText = op.adicionales || "Sin observaciones.";
+                document.getElementById("modal-obs-recs").innerText = op.recomendaciones || "Sin recomendaciones.";
+                document.getElementById("modal-obs-anom").innerText = op.patologia_detectada || "Sin anomalías.";
+            } else {
+                document.getElementById("modal-obs-results").innerText = "Sin diagnóstico registrado.";
+                document.getElementById("modal-obs-recs").innerText = "Sin recomendaciones.";
+                document.getElementById("modal-obs-anom").innerText = "Sin anomalías.";
+            }
 
-            // Signatures
-            document.getElementById("modal-sig-client").innerText = rec.nombre_cliente.split(' ')[0] || "Firma";
+            // Signatures rendering (support real Base64 drawing images)
+            const sigClient = document.getElementById("modal-sig-client");
+            if (rec.firma_cliente && rec.firma_cliente.startsWith("data:image/")) {
+                sigClient.innerHTML = `<img src="${rec.firma_cliente}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Cliente">`;
+            } else {
+                sigClient.innerText = rec.nombre_cliente.split(' ')[0] || "Firma";
+            }
             document.getElementById("modal-sig-client-name").innerText = rec.nombre_cliente;
-            document.getElementById("modal-sig-prof").innerText = rec.nombre_prof.split(' ')[0] || "Firma";
+
+            const sigProf = document.getElementById("modal-sig-prof");
+            if (rec.firma_profesional && rec.firma_profesional.startsWith("data:image/")) {
+                sigProf.innerHTML = `<img src="${rec.firma_profesional}" style="max-height: 70px; max-width: 100%; object-fit: contain;" alt="Firma Profesional">`;
+            } else {
+                sigProf.innerText = rec.nombre_prof.split(' ')[0] || "Firma";
+            }
             document.getElementById("modal-sig-prof-name").innerText = rec.nombre_prof;
 
             if (rec.es_menor_edad) {
-                document.getElementById("modal-sig-client-name").innerHTML = `${rec.nombre_cliente}<br><span style="font-size:0.75rem; color:var(--accent);">Tutor: ${rec.acudiente_autorizacion}</span>`;
+                document.getElementById("modal-sig-client-name").innerHTML = `${rec.nombre_cliente}<br><span style="font-size:0.75rem; color:var(--accent);">Tutor: ${rec.acudiente_autorizacion || 'N/A'}</span>`;
             }
 
             detailsModal.classList.add("active");
@@ -650,13 +733,13 @@
             detailsModal.classList.remove("active");
         }
 
-        // Export dummy CSV
+        // Export data to CSV
         function exportCSV() {
             let csvContent = "data:text/csv;charset=utf-8,";
             csvContent += "ID,Fecha,Cliente,Documento,Servicio,Profesional,Sede\n";
 
-            mockRecords.forEach(rec => {
-                csvContent += `${rec.id},${rec.fecha_registro},"${rec.nombre_cliente}","${rec.tipo_documento} ${rec.documento}","${rec.tipo_pqr}","${rec.nombre_prof}","${rec.sede}"\n`;
+            allRecords.forEach(rec => {
+                csvContent += `${rec.id},${rec.fecha_registro},"${rec.nombre_cliente}","${rec.documento}","${rec.tipo_pqr}","${rec.nombre_prof}","${rec.sede}"\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
@@ -680,9 +763,8 @@
             }
         }
 
-        // Init
-        renderTable(mockRecords);
-        updateStats(mockRecords);
+        // Init load
+        fetchRecords();
     </script>
 </body>
 

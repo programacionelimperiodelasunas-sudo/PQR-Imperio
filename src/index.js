@@ -19,6 +19,35 @@ function jsonResponse(data, status = 200) {
 	});
 }
 
+// Helper to decode Base64 string to Uint8Array and upload to R2
+async function uploadBase64ToR2(base64Str, prefix, env) {
+	if (!base64Str || !base64Str.startsWith("data:image/")) {
+		return base64Str; // Return as-is if it's already an R2 path or not base64
+	}
+	const parts = base64Str.split(",");
+	const base64Data = parts[1];
+	const contentType = parts[0].split(";")[0].split(":")[1] || "image/png";
+
+	// Decode Base64 in JavaScript
+	const binaryStr = atob(base64Data);
+	const len = binaryStr.length;
+	const bytes = new Uint8Array(len);
+	for (let i = 0; i < len; i++) {
+		bytes[i] = binaryStr.charCodeAt(i);
+	}
+
+	const randomSuffix = Math.floor(Math.random() * 10000);
+	const filename = `${prefix}_${Date.now()}_${randomSuffix}.png`;
+
+	// Upload to R2 Bucket
+	await env.pqr_r2.put(filename, bytes, {
+		httpMetadata: { contentType },
+	});
+
+	// Return relative path
+	return `/api/signatures/${filename}`;
+}
+
 export default {
 	async fetch(request, env, ctx) {
 		const url = new URL(request.url);
@@ -33,6 +62,30 @@ export default {
 		}
 
 		try {
+			// ================= SIGNATURES SERVING ROUTE =================
+			
+			// GET /api/signatures/:filename
+			if (path.startsWith("/api/signatures/") && method === "GET") {
+				const filename = path.split("/").pop();
+				if (!filename) {
+					return jsonResponse({ error: "Nombre de archivo no especificado" }, 400);
+				}
+
+				const object = await env.pqr_r2.get(filename);
+				if (!object) {
+					return new Response("Firma no encontrada", { status: 404 });
+				}
+
+				const headers = new Headers();
+				object.writeHttpMetadata(headers);
+				headers.set("etag", object.httpEtag);
+				headers.set("Access-Control-Allow-Origin", "*");
+				headers.set("Access-Control-Allow-Methods", "GET");
+				headers.set("Cache-Control", "public, max-age=31536000"); // Cache signatures for 1 year
+
+				return new Response(object.body, { headers });
+			}
+
 			// ================= AUTH ROUTES =================
 			
 			// POST /api/auth/register
@@ -155,6 +208,10 @@ export default {
 					}
 				}
 
+				// Upload signatures to Cloudflare R2
+				const firma_cliente_url = await uploadBase64ToR2(data.firma_cliente, "client", env);
+				const firma_profesional_url = await uploadBase64ToR2(data.firma_profesional, "prof", env);
+
 				// We will prepare all SQL statements and run them in a batch transaction
 				const statements = [];
 
@@ -179,12 +236,12 @@ export default {
 						data.enfermedad_detalle || null,
 						data.sede,
 						data.nombre_prof,
-						data.firma_profesional,
-						data.firma_cliente
+						firma_profesional_url,
+						firma_cliente_url
 					)
 				);
 
-				// 2. Insert details_unas if provided
+				// 2. Insert detalles_unas if provided
 				if (data.detalles_unas) {
 					const du = data.detalles_unas;
 					statements.push(

@@ -20,6 +20,12 @@
 			"database_name": "pqr-d1",
 			"database_id": "9d23e542-ef9a-4640-af9c-af165b39ae92"
 		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "pqr_r2",
+			"bucket_name": "pqr-r2"
+		}
 	]
 	/**
 	 * Smart Placement

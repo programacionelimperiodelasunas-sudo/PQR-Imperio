@@ -57,6 +57,9 @@ describe("PQR Imperio API Tests", () => {
 	});
 
 	it("creates, lists, fetches and deletes a customer registry with nested tables", async () => {
+		// Valid 1x1 transparent PNG base64 string
+		const validBase64Image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+
 		// 1. Create Registry
 		const payload = {
 			tipo_pqr: "Reclamación",
@@ -70,8 +73,8 @@ describe("PQR Imperio API Tests", () => {
 			enfermedad_detalle: "Alergia a la acetona",
 			sede: "Sede Norte",
 			nombre_prof: "Johana Profesional",
-			firma_profesional: "data:image/png;base64,...",
-			firma_cliente: "data:image/png;base64,...",
+			firma_profesional: validBase64Image,
+			firma_cliente: validBase64Image,
 			detalles_unas: {
 				proc_manicura_rusa: true,
 				proc_acrilico: false,
@@ -126,6 +129,10 @@ describe("PQR Imperio API Tests", () => {
 		expect(getData.detalles_unas.proc_manicura_rusa).toBe(1);
 		expect(getData.condiciones_especiales.especifique_condicion_piel).toBe("Piel seca alrededor de cutícula");
 		expect(getData.observaciones_prof.recomendaciones).toBe("Hidratar cutículas con aceite de almendras");
+		
+		// Verify R2 URL paths
+		expect(getData.firma_cliente).toContain("/api/signatures/client_");
+		expect(getData.firma_profesional).toContain("/api/signatures/prof_");
 
 		// 4. Delete Registry
 		const delRes = await SELF.fetch(`http://example.com/api/registros/${newId}`, {

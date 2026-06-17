@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const API_URL = "http://localhost:8787"; // Cambiar por tu URL de Cloudflare Worker en producción
+
     // 1. AUTO-SET DATE
     const dateInput = document.getElementById("documento-fecha");
     if (dateInput) {
@@ -33,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 3. CONDITIONAL INPUTS
-    // base diseases conditional
     const enfSi = document.getElementById("enf-si");
     const enfNo = document.getElementById("enf-no");
     const condEnfermedad = document.getElementById("conditional-enfermedad");
@@ -56,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
         enfNo.addEventListener("change", toggleEnfermedad);
     }
 
-    // minor age conditional
     const menorSi = document.getElementById("menor-si");
     const menorNo = document.getElementById("menor-no");
     const condAcudiente = document.getElementById("conditional-acudiente");
@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
             this.drawing = false;
             this.hasSigned = false;
 
-            // Setup line style
             this.ctx.strokeStyle = "#1a1a1a";
             this.ctx.lineJoin = "round";
             this.ctx.lineCap = "round";
@@ -98,13 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         initEvents() {
-            // Mouse events
             this.canvas.addEventListener("mousedown", (e) => this.startDrawing(e));
             this.canvas.addEventListener("mousemove", (e) => this.draw(e));
             this.canvas.addEventListener("mouseup", () => this.stopDrawing());
             this.canvas.addEventListener("mouseout", () => this.stopDrawing());
 
-            // Touch events
             this.canvas.addEventListener("touchstart", (e) => {
                 e.preventDefault();
                 const touch = e.touches[0];
@@ -125,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.canvas.dispatchEvent(mouseEvent);
             }, { passive: false });
 
-            this.canvas.addEventListener("touchend", (e) => {
+            this.canvas.addEventListener("touchend", () => {
                 const mouseEvent = new MouseEvent("mouseup", {});
                 this.canvas.dispatchEvent(mouseEvent);
             });
@@ -167,7 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const professionalPad = new SignaturePad("canvas-professional");
     const clientPad = new SignaturePad("canvas-client");
 
-    // Clear buttons
     document.querySelectorAll(".btn-clear-sig").forEach(button => {
         button.addEventListener("click", () => {
             const canvasId = button.getAttribute("data-canvas");
@@ -184,21 +180,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const consentForm = document.getElementById("consent-form");
 
     if (btnPrint && consentForm) {
-        btnPrint.addEventListener("click", () => {
-            // Check form validations (HTML5 required attributes)
+        btnPrint.addEventListener("click", async () => {
             if (!consentForm.checkValidity()) {
                 consentForm.reportValidity();
                 return;
             }
 
-            // Check if at least one procedure is checked
             const checkedProcs = Array.from(procedureCheckboxes).filter(cb => cb.checked);
             if (checkedProcs.length === 0) {
                 alert("Por favor, seleccione al menos un procedimiento a realizar.");
                 return;
             }
 
-            // Verify signature validations
             if (professionalPad && !professionalPad.hasSigned) {
                 alert("Por favor, la profesional especialista debe firmar el documento.");
                 return;
@@ -209,8 +202,81 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // All validation passed, trigger native print view
-            window.print();
+            btnPrint.disabled = true;
+            const originalText = btnPrint.innerHTML;
+            btnPrint.innerText = "Guardando en base de datos...";
+
+            try {
+                // Collect skin conditions
+                const skinChecks = Array.from(document.querySelectorAll('input[name="piel-condicion"]:checked')).map(cb => cb.value);
+                const skinOther = document.getElementById("piel-otra")?.value || "";
+                if (skinOther) skinChecks.push(skinOther);
+                const skinConditionList = skinChecks.join(", ");
+
+                // Collect lashes conditions
+                const lashChecks = Array.from(document.querySelectorAll('input[name="pestanas-condicion"]:checked')).map(cb => cb.value);
+                const lashOther = document.getElementById("pestanas-otra")?.value || "";
+                if (lashOther) lashChecks.push(lashOther);
+                const lashConditionList = lashChecks.join(", ");
+
+                // Construct full API payload
+                const payload = {
+                    tipo_pqr: "Cejas y Pestañas",
+                    nombre_cliente: document.getElementById("cliente-nombre").value,
+                    tipo_documento: document.getElementById("cliente-tipo-doc").value,
+                    documento: document.getElementById("cliente-numero-doc").value,
+                    ciudad_expedicion: document.getElementById("cliente-expedicion").value,
+                    telefono: document.getElementById("cliente-telefono").value,
+                    es_menor_edad: document.querySelector('input[name="menor-edad"]:checked')?.value === "SI",
+                    acudiente_autorizacion: document.getElementById("acudiente-autorizacion")?.value || null,
+                    tiene_enfermedad: document.querySelector('input[name="enfermedad-base"]:checked')?.value === "SI",
+                    enfermedad_detalle: document.getElementById("enfermedad-detalle")?.value || null,
+                    sede: document.getElementById("documento-sede").value,
+                    nombre_prof: document.getElementById("nombre-profesional").value,
+                    firma_profesional: professionalPad.canvas.toDataURL("image/png"),
+                    firma_cliente: clientPad.canvas.toDataURL("image/png"),
+                    
+                    detalles_cejas: {
+                        proc_depilacion: document.getElementById("proc-bigen").checked,
+                        proc_pestañas: document.getElementById("proc-pestañas").checked,
+                        proc_laminado: document.getElementById("proc-laminado").checked,
+                        proc_lifting: document.getElementById("proc-lifting").checked,
+                        proc_micropigmentacion: document.getElementById("proc-micropigmentacion").checked,
+                        proc_retiro_de_pestañas: document.getElementById("proc-retiro-pestanas").checked
+                    },
+                    condiciones_especiales: {
+                        posible_condicion_piel: skinConditionList.length > 0,
+                        especifique_condicion_piel: skinConditionList || null,
+                        posible_condicion_pestañas: lashConditionList.length > 0,
+                        especifique_condicion_pestañas: lashConditionList || null
+                    },
+                    observaciones_prof: {
+                        patologia_detectada: document.getElementById("prof-observaciones").value || "Ninguna",
+                        recomendaciones: document.getElementById("prof-recomendaciones").value || "Ninguna",
+                        adicionales: document.getElementById("prof-resultados").value || "Ninguna"
+                    }
+                };
+
+                const res = await fetch(`${API_URL}/api/registros`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.error || "Error al guardar el registro");
+                }
+
+                alert("¡Registro guardado con éxito en la base de datos!");
+                window.print();
+            } catch (err) {
+                console.error(err);
+                alert("Ocurrió un error al guardar en la base de datos: " + err.message);
+            } finally {
+                btnPrint.disabled = false;
+                btnPrint.innerHTML = originalText;
+            }
         });
     }
 });
