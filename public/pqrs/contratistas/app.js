@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (dateInput) {
         const today = new Date();
         const yyyy = today.getFullYear();
-        let mm = today.getMonth() + 1; // Months start at 0
+        let mm = today.getMonth() + 1;
         let dd = today.getDate();
 
         if (dd < 10) dd = '0' + dd;
@@ -13,73 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dateInput.value = `${yyyy}-${mm}-${dd}`;
     }
 
-    // 2. PROCEDURES INTERACTIVITY (SHOW/HIDE EXPLANATIONS)
-    const procedureCheckboxes = document.querySelectorAll(".procedure-checkbox");
-    procedureCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener("change", (e) => {
-            const item = e.target.closest(".procedure-item");
-            const nestedConfirm = item.querySelector(".proc-confirm");
-            if (e.target.checked) {
-                item.classList.add("active");
-                if (nestedConfirm) nestedConfirm.required = true;
-            } else {
-                item.classList.remove("active");
-                if (nestedConfirm) {
-                    nestedConfirm.required = false;
-                    nestedConfirm.checked = false; // Reset if unchecked
-                }
-            }
-        });
-    });
-
-    // 3. CONDITIONAL INPUTS
-    // base diseases conditional
-    const enfSi = document.getElementById("enf-si");
-    const enfNo = document.getElementById("enf-no");
-    const condEnfermedad = document.getElementById("conditional-enfermedad");
-    const enfermedadDetalle = document.getElementById("enfermedad-detalle");
-
-    function toggleEnfermedad() {
-        if (enfSi && enfSi.checked) {
-            condEnfermedad.classList.add("active");
-            if (enfermedadDetalle) enfermedadDetalle.required = true;
-        } else {
-            condEnfermedad.classList.remove("active");
-            if (enfermedadDetalle) {
-                enfermedadDetalle.required = false;
-                enfermedadDetalle.value = "";
-            }
-        }
-    }
-    if (enfSi && enfNo) {
-        enfSi.addEventListener("change", toggleEnfermedad);
-        enfNo.addEventListener("change", toggleEnfermedad);
-    }
-
-    // minor age conditional
-    const menorSi = document.getElementById("menor-si");
-    const menorNo = document.getElementById("menor-no");
-    const condAcudiente = document.getElementById("conditional-acudiente");
-    const acudienteAutorizacion = document.getElementById("acudiente-autorizacion");
-
-    function toggleAcudiente() {
-        if (menorSi && menorSi.checked) {
-            condAcudiente.classList.add("active");
-            if (acudienteAutorizacion) acudienteAutorizacion.required = true;
-        } else {
-            condAcudiente.classList.remove("active");
-            if (acudienteAutorizacion) {
-                acudienteAutorizacion.required = false;
-                acudienteAutorizacion.value = "";
-            }
-        }
-    }
-    if (menorSi && menorNo) {
-        menorSi.addEventListener("change", toggleAcudiente);
-        menorNo.addEventListener("change", toggleAcudiente);
-    }
-
-    // 4. SIGNATURE CANVAS PADS
+    // 2. SIGNATURE CANVAS PAD
     class SignaturePad {
         constructor(canvasId) {
             this.canvas = document.getElementById(canvasId);
@@ -133,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         getMousePos(e) {
             const rect = this.canvas.getBoundingClientRect();
-            // Accounts for client coordinates vs canvas viewport
             return {
                 x: e.clientX - rect.left,
                 y: e.clientY - rect.top
@@ -165,22 +98,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const professionalPad = new SignaturePad("canvas-professional");
-    const clientPad = new SignaturePad("canvas-client");
+    const contractorPad = new SignaturePad("canvas-contractor");
 
     // Clear buttons
     document.querySelectorAll(".btn-clear-sig").forEach(button => {
         button.addEventListener("click", () => {
             const canvasId = button.getAttribute("data-canvas");
-            if (canvasId === "canvas-professional" && professionalPad) {
-                professionalPad.clear();
-            } else if (canvasId === "canvas-client" && clientPad) {
-                clientPad.clear();
+            if (canvasId === "canvas-contractor" && contractorPad) {
+                contractorPad.clear();
             }
         });
     });
 
-    // 5. VALIDATIONS & PRINT TRIGGER
+    // 3. VALIDATIONS & PRINT TRIGGER
     const btnPrint = document.getElementById("btn-print");
     const consentForm = document.getElementById("consent-form");
 
@@ -192,21 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Check if at least one procedure is checked
-            const checkedProcs = Array.from(procedureCheckboxes).filter(cb => cb.checked);
-            if (checkedProcs.length === 0) {
-                alert("Por favor, seleccione al menos un procedimiento a realizar.");
-                return;
-            }
-
-            // Verify signature validations
-            if (professionalPad && !professionalPad.hasSigned) {
-                alert("Por favor, la profesional manicurista debe firmar el documento.");
-                return;
-            }
-
-            if (clientPad && !clientPad.hasSigned) {
-                alert("Por favor, el cliente o acudiente debe firmar el documento.");
+            // Verify signature validation
+            if (contractorPad && !contractorPad.hasSigned) {
+                alert("Por favor, el contratista o manicurista debe firmar el documento.");
                 return;
             }
 

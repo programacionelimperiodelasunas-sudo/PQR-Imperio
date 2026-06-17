@@ -11,7 +11,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Specific Anamnesis styles to make it look premium and responsive */
         .anamnesis-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -141,23 +140,13 @@
 
 <body>
     <div class="app-container">
-        <!-- Navigation Tabs (Hidden on Print) -->
-        <nav class="nav-tabs no-print">
-            <a href="index.html" class="nav-tab">
-                <span class="nav-tab-icon">💅</span>
-                <span>Uñas Artificiales</span>
+        <div class="no-print" style="margin-bottom: 20px;">
+            <a href="../index.html" class="nav-tab"
+                style="display: inline-flex; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px;">
+                <span>← Volver al Portal</span>
             </a>
-            <a href="index2.html" class="nav-tab">
-                <span class="nav-tab-icon">👁️</span>
-                <span>Cejas y Pestañas</span>
-            </a>
-            <a href="index3.html" class="nav-tab active">
-                <span class="nav-tab-icon">🦶</span>
-                <span>Pedicura Especializada</span>
-            </a>
-        </nav>
+        </div>
 
-        <!-- Floating Brand Header -->
         <header class="main-header">
             <div class="brand-badge">Documento Autorizado y Distribuido por</div>
             <h1 class="brand-title">El Imperio de las Uñas</h1>
@@ -167,9 +156,55 @@
 
         <form id="consent-form" class="consent-form" onsubmit="event.preventDefault();">
 
-            <!-- SECTION 1: DATOS PERSONALES -->
+            <!-- SECTION 1: AUTORIZACIÓN DE DATOS PERSONALES -->
             <section class="form-section card-style">
-                <h2 class="section-title">1. Datos Personales del Cliente</h2>
+                <h2 class="section-title">1. Autorización de Tratamiento de Datos Personales</h2>
+                <div class="legal-text-container" style="margin-top: 25px; max-height: 180px;">
+                    <strong style="color: var(--accent);">AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS
+                        PERSONALES</strong><br><br>
+                    EL IMPERIO DE LAS UÑAS BY PAULA S.A.S., identificada con NIT 901396476 - 1, en calidad de
+                    Responsable del Tratamiento de Datos Personales, informa que los datos suministrados serán tratados
+                    conforme a la Ley 1581 de 2012, el Decreto 1074 de 2015 y la Política de Tratamiento de Datos
+                    Personales de la compañía.<br><br>
+                    Mediante la firma del presente documento, autorizo de manera previa, expresa, informada e inequívoca
+                    a EL IMPERIO DE LAS UÑAS BY PAULA S.A.S. para recolectar, almacenar, actualizar, consultar, usar,
+                    circular, transmitir y, cuando legalmente proceda, transferir mis datos personales para las
+                    siguientes finalidades:
+                    <ol style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+                        <li>Gestionar el agendamiento, modificación y cancelación de citas.</li>
+                        <li>Prestar los servicios contratados.</li>
+                        <li>Realizar seguimiento a la calidad del servicio.</li>
+                        <li>Gestionar solicitudes, peticiones, quejas, reclamos y sugerencias.</li>
+                        <li>Elaborar facturación y soportes contables.</li>
+                        <li>Enviar información relacionada con promociones, campañas comerciales, descuentos, eventos y
+                            programas de fidelización.</li>
+                        <li>Realizar encuestas de satisfacción.</li>
+                        <li>Cumplir obligaciones legales, regulatorias y administrativas.</li>
+                        <li>Atender requerimientos de autoridades competentes.</li>
+                        <li>Implementar medidas de seguridad y prevención de fraude.</li>
+                    </ol>
+                    Declaro que fui informado de:<br>
+                    a) El carácter facultativo de responder preguntas sobre datos sensibles.<br>
+                    b) Mis derechos como titular de la información, incluyendo conocer, actualizar, rectificar y
+                    solicitar la supresión de mis datos personales.<br>
+                    c) Los canales habilitados por la compañía para ejercer mis derechos.
+                </div>
+                <div class="consent-check-wrapper" style="margin-top: 10px;">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="acepta-datos-personales" required>
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">Autorizo el tratamiento de mis datos personales de conformidad con
+                            la <a href="../politica-datos.html" target="_blank"
+                                style="color: var(--accent); text-decoration: underline; font-weight: 600;">Política de
+                                Tratamiento y Protección de Datos Personales</a> de la empresa. <span
+                                class="required">*</span></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- SECTION 2: DATOS PERSONALES -->
+            <section class="form-section card-style">
+                <h2 class="section-title">2. Datos Personales del Cliente</h2>
                 <div class="grid-col-3">
                     <div class="input-group">
                         <label for="cliente-nombre">Yo, (Nombre Completo) <span class="required">*</span></label>
@@ -207,9 +242,9 @@
                 </div>
             </section>
 
-            <!-- SECTION 2: DECLARACIÓN LEGAL -->
+            <!-- SECTION 3: DECLARACIÓN LEGAL -->
             <section class="form-section card-style legal-declarations">
-                <h2 class="section-title">2. Declaración de Consentimiento y Exoneración</h2>
+                <h2 class="section-title">3. Declaración de Consentimiento y Exoneración</h2>
                 <div class="legal-text-container">
                     <p>
                         Yo doy constancia del estado actual de las uñas de mis pies, por tal razón de manera libre, he
@@ -243,15 +278,14 @@
                 </div>
             </section>
 
-            <!-- SECTION 3: PROCEDIMIENTOS -->
+            <!-- SECTION 4: PROCEDIMIENTOS -->
             <section class="form-section card-style">
-                <h2 class="section-title">3. Explicación de Procedimientos a Realizar</h2>
+                <h2 class="section-title">4. Explicación de Procedimientos a Realizar</h2>
                 <p class="section-desc">Seleccione el o los procedimientos que se le realizarán hoy para leer e
                     interactuar con su contenido técnico.</p>
 
                 <div class="procedures-container">
 
-                    <!-- 1. Pedicura con Esmaltado Tradicional/Semipermanente -->
                     <div class="procedure-item">
                         <label class="procedure-trigger">
                             <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-tradicional">
@@ -294,7 +328,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. Pedicura con Reconstrucción -->
                     <div class="procedure-item">
                         <label class="procedure-trigger">
                             <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-reconstruccion">
@@ -347,7 +380,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. Pedicura con Onicocriptosis -->
                     <div class="procedure-item">
                         <label class="procedure-trigger">
                             <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-onicocriptosis">
@@ -385,7 +417,6 @@
                                     Nivel de Onicocriptosis:</h4>
 
                                 <div class="grid-col-3" style="grid-template-columns: 1fr 1fr; gap: 15px;">
-                                    <!-- Leve -->
                                     <div class="signature-card" style="align-items: flex-start; padding: 15px;">
                                         <span
                                             style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase; color: var(--dark); border-bottom: 1px solid var(--border-color); width: 100%; padding-bottom: 5px; margin-bottom: 8px;">Nivel
@@ -402,7 +433,6 @@
                                                     pequeña</span></label>
                                         </div>
                                     </div>
-                                    <!-- Medio -->
                                     <div class="signature-card" style="align-items: flex-start; padding: 15px;">
                                         <span
                                             style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase; color: var(--dark); border-bottom: 1px solid var(--border-color); width: 100%; padding-bottom: 5px; margin-bottom: 8px;">Nivel
@@ -448,8 +478,6 @@
                             </label>
                         </div>
                     </div>
-
-                    <!-- 4. Pedicura con Posible Onicomicosis -->
                     <div class="procedure-item">
                         <label class="procedure-trigger">
                             <input type="checkbox" class="procedure-checkbox" id="proc-pedicura-onicomicosis">
@@ -525,14 +553,13 @@
                 </div>
             </section>
 
-            <!-- SECTION 4: ANAMNESIS -->
+            <!-- SECTION 5: ANAMNESIS -->
             <section class="form-section card-style">
-                <h2 class="section-title">4. Historial de Salud (Anamnesis)</h2>
+                <h2 class="section-title">5. Historial de Salud (Anamnesis)</h2>
                 <p class="section-desc">Marque si usted o algún familiar en primer grado de consanguinidad presenta o ha
                     presentado alguna de las siguientes patologías.</p>
 
                 <div class="anamnesis-grid">
-                    <!-- Column 1 -->
                     <div>
                         <div class="table-title-header">Patologías - Grupo A</div>
                         <table class="anamnesis-table">
@@ -632,7 +659,6 @@
                         </table>
                     </div>
 
-                    <!-- Column 2 -->
                     <div>
                         <div class="table-title-header">Patologías - Grupo B</div>
                         <table class="anamnesis-table">
@@ -757,7 +783,6 @@
                     </div>
                 </div>
 
-                <!-- ALERGIAS -->
                 <div class="margin-top-large">
                     <div class="table-title-header">Alergias Conocidas</div>
                     <div class="grid-col-3"
@@ -786,14 +811,12 @@
                     </div>
                 </div>
 
-                <!-- CIRUGÍAS / HOSPITALIZACIONES -->
                 <div class="input-group margin-top-large">
                     <label for="historial-cirugias">Hospitalizaciones – Cirugías en general:</label>
                     <textarea id="historial-cirugias" rows="3"
                         placeholder="Detalle intervenciones quirúrgicas o ingresos hospitalarios recientes..."></textarea>
                 </div>
 
-                <!-- HÁBITOS -->
                 <div class="margin-top-large">
                     <div class="table-title-header">Hábitos y Estado Fisiológico</div>
                     <div class="grid-col-3"
@@ -837,7 +860,6 @@
                     </div>
                 </div>
 
-                <!-- MEDICAMENTOS ACTUALES -->
                 <div class="input-group margin-top-large">
                     <label for="medicamentos-actuales">Prescripciones y medicamentos actuales:</label>
                     <textarea id="medicamentos-actuales" rows="3"
@@ -845,9 +867,8 @@
                 </div>
             </section>
 
-            <!-- ACUDIENTE CONDITIONAL -->
             <section class="form-section card-style">
-                <h2 class="section-title">5. Autorización de Menor de Edad</h2>
+                <h2 class="section-title">6. Autorización de Menor de Edad</h2>
                 <div class="form-group">
                     <div class="question-row flex-start">
                         <span class="question-text">¿El cliente es menor de edad? <span class="required">*</span></span>
@@ -866,9 +887,8 @@
                 </div>
             </section>
 
-            <!-- DIAGNÓSTICO PROFESIONAL -->
             <section class="form-section card-style manicurist-section">
-                <h2 class="section-title">6. Diagnóstico y Observaciones de la Profesional</h2>
+                <h2 class="section-title">7. Diagnóstico y Observaciones de la Profesional</h2>
                 <p class="section-desc">Sección obligatoria para ser rellenada por la pedicurista a cargo.</p>
 
                 <div class="input-group">
@@ -891,9 +911,8 @@
                 </div>
             </section>
 
-            <!-- DATE AND SEDE -->
             <section class="form-section card-style">
-                <h2 class="section-title">7. Fecha y Sede del Procedimiento</h2>
+                <h2 class="section-title">8. Fecha y Sede del Procedimiento</h2>
                 <div class="grid-col-3">
                     <div class="input-group">
                         <label>Ciudad de Suscripción</label>
@@ -910,9 +929,8 @@
                 </div>
             </section>
 
-            <!-- FIRMAS -->
             <section class="form-section card-style signatures-section">
-                <h2 class="section-title">8. Firmas de Aceptación</h2>
+                <h2 class="section-title">9. Firmas de Aceptación</h2>
                 <p class="legal-declaration-summary">
                     Declaro que he tenido el tiempo necesario para leer y comprender el presente consentimiento el cual
                     firmo de manera voluntaria dando mi consentimiento para que la Profesional y el personal auxiliar si
@@ -921,7 +939,6 @@
 
                 <div class="signatures-grid">
 
-                    <!-- Gerente General (Autorizada/Estampada) -->
                     <div class="signature-card official-signature">
                         <div class="signature-canvas-container">
                             <div class="ceo-signature-stamp">
@@ -935,8 +952,6 @@
                             <span class="sign-company">El imperio de las uñas by Paula SAS</span>
                         </div>
                     </div>
-
-                    <!-- Profesional Pedicurista -->
                     <div class="signature-card">
                         <div class="signature-canvas-container">
                             <canvas id="canvas-professional" width="300" height="120"></canvas>
@@ -950,7 +965,6 @@
                         </div>
                     </div>
 
-                    <!-- Cliente o Acudiente -->
                     <div class="signature-card">
                         <div class="signature-canvas-container">
                             <canvas id="canvas-client" width="300" height="120"></canvas>
@@ -971,7 +985,6 @@
                 </div>
             </section>
 
-            <!-- ACTION BUTTONS -->
             <div class="actions-panel no-print">
                 <button type="button" id="btn-print" class="btn-primary">
                     <span class="btn-icon">🖨️</span> Guardar y Generar PDF / Imprimir
@@ -984,7 +997,6 @@
         </form>
     </div>
 
-    <!-- Scripts -->
     <script src="app3.js"></script>
 </body>
 

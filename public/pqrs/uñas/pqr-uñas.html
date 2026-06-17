@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consentimiento Informado - El Imperio de las Uñas</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Alex+Brush&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <div class="no-print" style="margin-bottom: 20px;">
+            <a href="../index.html" class="nav-tab"
+                style="display: inline-flex; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px;">
+                <span>← Volver al Portal</span>
+            </a>
+        </div>
+
+        <header class="main-header">
+            <div class="brand-badge">Documento Autorizado y Distribuido por</div>
+            <h1 class="brand-title">El Imperio de las Uñas</h1>
+            <p class="brand-subtitle">BY PAULA SAS • NIT 901396476 - 1</p>
+            <div class="document-reference">Referencia: Consentimiento Informado (Uñas Artificiales)</div>
+        </header>
+
+        <form id="consent-form" class="consent-form" onsubmit="event.preventDefault();">
+
+            <!-- SECTION 1: AUTORIZACIÓN DE DATOS PERSONALES -->
+            <section class="form-section card-style">
+                <h2 class="section-title">1. Autorización de Tratamiento de Datos Personales</h2>
+                <div class="legal-text-container" style="margin-top: 25px; max-height: 180px;">
+                    <strong style="color: var(--accent);">AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS
+                        PERSONALES</strong><br><br>
+                    EL IMPERIO DE LAS UÑAS BY PAULA S.A.S., identificada con NIT 901396476 - 1, en calidad de
+                    Responsable del Tratamiento de Datos Personales, informa que los datos suministrados serán tratados
+                    conforme a la Ley 1581 de 2012, el Decreto 1074 de 2015 y la Política de Tratamiento de Datos
+                    Personales de la compañía.<br><br>
+                    Mediante la firma del presente documento, autorizo de manera previa, expresa, informada e inequívoca
+                    a EL IMPERIO DE LAS UÑAS BY PAULA S.A.S. para recolectar, almacenar, actualizar, consultar, usar,
+                    circular, transmitir y, cuando legalmente proceda, transferir mis datos personales para las
+                    siguientes finalidades:
+                    <ol style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px;">
+                        <li>Gestionar el agendamiento, modificación y cancelación de citas.</li>
+                        <li>Prestar los servicios contratados.</li>
+                        <li>Realizar seguimiento a la calidad del servicio.</li>
+                        <li>Gestionar solicitudes, peticiones, quejas, reclamos y sugerencias.</li>
+                        <li>Elaborar facturación y soportes contables.</li>
+                        <li>Enviar información relacionada con promociones, campañas comerciales, descuentos, eventos y
+                            programas de fidelización.</li>
+                        <li>Realizar encuestas de satisfacción.</li>
+                        <li>Cumplir obligaciones legales, regulatorias y administrativas.</li>
+                        <li>Atender requerimientos de autoridades competentes.</li>
+                        <li>Implementar medidas de seguridad y prevención de fraude.</li>
+                    </ol>
+                    Declaro que fui informado de:<br>
+                    a) El carácter facultativo de responder preguntas sobre datos sensibles.<br>
+                    b) Mis derechos como titular de la información, incluyendo conocer, actualizar, rectificar y
+                    solicitar la supresión de mis datos personales.<br>
+                    c) Los canales habilitados por la compañía para ejercer mis derechos.
+                </div>
+                <div class="consent-check-wrapper" style="margin-top: 10px;">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="acepta-datos-personales" required>
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">Autorizo el tratamiento de mis datos personales de conformidad con
+                            la <a href="../politica-datos.html" target="_blank"
+                                style="color: var(--accent); text-decoration: underline; font-weight: 600;">Política de
+                                Tratamiento y Protección de Datos Personales</a> de la empresa. <span
+                                class="required">*</span></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- SECTION 2: DATOS PERSONALES -->
+            <section class="form-section card-style">
+                <h2 class="section-title">2. Datos Personales del Cliente</h2>
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label for="cliente-nombre">Yo, (Nombre Completo) <span class="required">*</span></label>
+                        <input type="text" id="cliente-nombre" required placeholder="Nombre completo del cliente">
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-tipo-doc">Identificado con <span class="required">*</span></label>
+                        <select id="cliente-tipo-doc" required>
+                            <option value="" disabled selected>Seleccione tipo...</option>
+                            <option value="C.C.">Cédula de Ciudadanía (C.C.)</option>
+                            <option value="C.E.">Cédula de Extranjería (C.E.)</option>
+                            <option value="T.I.">Tarjeta de Identidad (T.I.)</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-otro-doc">Especifique otro tipo</label>
+                        <input type="text" id="cliente-otro-doc" placeholder="Si seleccionó otro...">
+                    </div>
+                </div>
+
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label for="cliente-numero-doc">Número de Documento <span class="required">*</span></label>
+                        <input type="text" id="cliente-numero-doc" required placeholder="Número de identificación">
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-expedicion">Expedido en <span class="required">*</span></label>
+                        <input type="text" id="cliente-expedicion" required placeholder="Ciudad de expedición">
+                    </div>
+                    <div class="input-group">
+                        <label for="cliente-telefono">Teléfono / WhatsApp <span class="required">*</span></label>
+                        <input type="tel" id="cliente-telefono" required placeholder="Número telefónico">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: DECLARACIÓN LEGAL -->
+            <section class="form-section card-style legal-declarations">
+                <h2 class="section-title">3. Declaración de Consentimiento y Exoneración</h2>
+                <div class="legal-text-container">
+                    <p>
+                        Doy constancia del estado actual de mis uñas, por tal razón de manera libre, he sido informado
+                        por la profesional que el procedimiento que me van a realizar, es netamente estético y no médico
+                        clínico, por lo cual para el adecuado diagnóstico en caso de existir algún padecimiento o
+                        enfermedad debo acudir a los diferentes procedimientos, exámenes o consultas con el médico
+                        especializado que el caso amerite. Entiendo que no debo suspender los tratamientos descritos por
+                        ellos hasta una vez no me sea autorizado. También me han sido aclaradas las dudas, he
+                        comprendido total y claramente la naturaleza y desarrollo del procedimiento, además me han
+                        informado del mantenimiento, la no garantía del procedimiento y la duración en tiempo para
+                        efectuar mis retoques los cuales se deberán realizar de <strong>15 a 20 días
+                            calendario</strong>.
+                    </p>
+                    <p>
+                        Con el presente dejo constancia y manifiesto que he negado alguna patología mediante la cual se
+                        pueda tener alguna reacción que perjudique el estado actual de mi salud e integridad física; de
+                        igual manera de forma abierta y libre manifiesto que la empresa <strong>EL IMPERIO DE LAS UÑAS
+                            BY PAULA SAS</strong> identificada con número de Nit <strong>901396476 -1</strong>, se
+                        exonera de toda clase de responsabilidad frente al reclamos de los perjuicios que se generen por
+                        las omisiones a sugerencias propias del desarrollo del procedimiento descrito y de forma
+                        posterior a este, según las exigencias propias del caso.
+                    </p>
+                    <p class="highlight-p">
+                        Se realizará cualquier procedimiento únicamente cuando la salud de las uñas del cliente muestre
+                        evidencia de salud. En casos como Onicolisis proximales o centrales, Onicomicosis, hematomas
+                        subungueales, paroniquia o cualquier otra condición biológica propia de la naturaleza de las
+                        uñas que impidan la aplicación de los diferentes sistemas estéticos de uñas artificiales, el
+                        profesional podrá dar por terminado el proceso a efectuar por la corresponsabilidad que le atañe
+                        en el cuidado de la salud del usuario.
+                    </p>
+                    <p class="highlight-p accent">
+                        Sin embargo, si el cliente desea el procedimiento este se podrá realizar únicamente si se firma
+                        el consentimiento informando en donde se brinda la aceptación y autorización asumiendo total
+                        responsabilidad de las posibles complicaciones. Estas condiciones son: Onicofagia, Onicolisis
+                        pequeñas, Onicorrexis, Leuconiquia, Hematoma subungueal astillado y uñas estriadas.
+                    </p>
+                </div>
+                <div class="consent-check-wrapper">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="acepta-declaracion" required>
+                        <span class="checkbox-checkmark"></span>
+                        <span class="checkbox-label">He leído, comprendo y acepto la totalidad de la declaración legal
+                            de consentimiento y exoneración de responsabilidad. <span class="required">*</span></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- SECTION 4: PROCEDIMIENTOS -->
+            <section class="form-section card-style">
+                <h2 class="section-title">4. Explicación de Procedimientos a Realizar</h2>
+                <p class="section-desc">Seleccione el o los procedimientos que se le realizarán hoy para leer y aceptar
+                    su explicación técnica.</p>
+
+                <div class="procedures-container">
+
+                    <!-- 1. Manicura Rusa -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-manicura-rusa">
+                            <span class="procedure-title">Manicura Rusa</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se corre la cutícula con ayuda de un pusher o palito de naranjo con el fin de
+                                    desprender la cutícula adherida en la lámina de la uña.</li>
+                                <li>Para este procedimiento se utilizará el drill junto a 2 o 3 diferentes brocas según
+                                    la adherencia y tipo de piel del cliente con el fin de aperturar de manera correcta
+                                    la cutícula.</li>
+                                <li>Se realizará el corte de exceso de piel en el área de cutícula con ayuda de unas
+                                    tijeras.</li>
+                            </ol>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Manicura Rusa">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Manicura
+                                    Rusa.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 2. Uñas en Acrílico -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-acrilico">
+                            <span class="procedure-title">Aplicación de Uñas en Acrílico</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realizará la preparación de la uña con ayuda de una lima de gramaje 180, en
+                                    cuanto se evidencie los canales de adherencia se aplicarán los preparadores para
+                                    asegurar la fijación del producto.</li>
+                                <li>Se realizará manicura drill según el procedimiento anteriormente mencionado.</li>
+                                <li>Se ubicarán los moldes de extensión en todas las uñas naturales.</li>
+                                <li>Se aplicará una capa delgada de base semipermanente y se sella en lámpara UV.</li>
+                                <li>Se realizará el esculpido del producto con el polímero y monómero según las
+                                    indicaciones del cliente.</li>
+                                <li>La estructuración de la uña se realiza limando la superficie del acrílico con ayuda
+                                    de lima gramaje 180 y el drill con las brocas necesarias.</li>
+                                <li>Se realiza el maquillaje indicado por los gustos de la clienta y el producto que
+                                    desee ya sea en esmalte tradicional o en esmaltado semipermanente.</li>
+                            </ol>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Uñas en Acrílico">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Uñas en
+                                    Acrílico.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 3. Uñas en Polygel -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-polygel">
+                            <span class="procedure-title">Aplicación de Uñas en Polygel</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realizará la preparación de la uña con ayuda de una lima de gramaje 180, en
+                                    cuanto se evidencie los canales de adherencia se aplicarán los preparadores para
+                                    asegurar la fijación del producto.</li>
+                                <li>Se realizará manicura drill según el procedimiento anteriormente mencionado.</li>
+                                <li>Se ubicarán los moldes de extensión en todas las uñas naturales.</li>
+                                <li>Se aplicará una capa delgada de base semipermanente y se sella en lámpara UV.</li>
+                                <li>Se realizará el esculpido del producto con el polygel y alcohol según las
+                                    indicaciones del cliente.</li>
+                                <li>La estructuración de la uña se realiza limando la superficie del polygel con ayuda
+                                    de lima gramaje 180 y el drill con las brocas necesarias.</li>
+                                <li>Se realiza el maquillaje indicado por los gustos de la clienta y el producto que
+                                    desee ya sea en esmalte tradicional o en esmaltado semipermanente.</li>
+                            </ol>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Uñas en Polygel">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Uñas en
+                                    Polygel.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. Uñas Base Rubber -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-rubber">
+                            <span class="procedure-title">Aplicación de Uñas Base Rubber</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realizará manicura drill según el procedimiento anteriormente mencionado.</li>
+                                <li>Se realizará la preparación de la uña con ayuda de una lima de gramaje 180, en
+                                    cuanto se evidencie los canales de adherencia se aplicarán los preparadores para
+                                    asegurar la fijación del producto.</li>
+                                <li>Se aplicará una capa gruesa de base rubber y se sella en lámpara UV.</li>
+                                <li>Se realiza el maquillaje indicado por los gustos de la clienta en esmaltado
+                                    semipermanente.</li>
+                            </ol>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Uñas Base Rubber">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Uñas Base
+                                    Rubber.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 5. Retoques -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-retoques">
+                            <span class="procedure-title">Retoques (Acrílico, Polygel, Semipermanente o Base
+                                Rubber)</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se retirará el esmalte tradicional con ayuda de quitaesmalte y algodón, si por el
+                                    contrario el cliente cuenta con maquillaje semipermanente este se retirará con ayuda
+                                    del drill y la broca especializada para dicho procedimiento.</li>
+                                <li>En cuanto la uña quede sin esmaltado, se realizará el retiro del producto que se
+                                    encuentra levantado o en mal estado con ayuda del drill y la broca especializada
+                                    para este procedimiento.</li>
+                                <li>Se realizará manicura drill según el procedimiento anteriormente mencionado.</li>
+                                <li>Se realizará la preparación de la uña que no tienen ningún producto con ayuda de una
+                                    lima de gramaje 180, en cuanto se evidencie los canales de adherencia se aplicarán
+                                    los preparadores para asegurar la fijación.</li>
+                                <li>Se realiza la aplicación del producto que desee la clienta ya sea acrílico, polygel
+                                    o base rubber.</li>
+                                <li>En los casos de la aplicación de acrílico o polygel la estructuración de la uña se
+                                    realiza limando la superficie con ayuda de lima gramaje 180 y el drill con las
+                                    brocas necesarias. Si la aplicación fue base rubber no se realizará ninguna
+                                    estructuración.</li>
+                                <li>En los casos de la aplicación de acrílico o polygel se realiza el maquillaje
+                                    indicado por los gustos de la clienta y el producto que desee ya sea en esmalte
+                                    tradicional o en esmaltado semipermanente. En el caso de la aplicación de base
+                                    rubber solo se aplicará maquillaje en esmalte semipermanente.</li>
+                            </ol>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Retoque de Sistemas">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Retoques.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 6. Retiro -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-retiro">
+                            <span class="procedure-title">Retiro de Sistemas (Acrílico, Polygel, Semipermanente o Base
+                                Rubber)</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realiza el retiro de la mayor cantidad de producto sin llegar a la uña con ayuda
+                                    del drill y las brocas especializadas para este procedimiento.</li>
+                                <li>Se colocará un poco de algodón humedecido en acetona y se recubrirá con un poco de
+                                    aluminio.</li>
+                                <li>Se dejará actuar de 5 a 15 minutos según la necesidad de cada sistema.</li>
+                                <li>Posterior a esto se terminará de retirar el producto con ayuda de un pusher y lima.
+                                </li>
+                                <li>Se realizará la limpieza de la uña y cutícula.</li>
+                            </ol>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Retiro de Sistemas">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y autorizo el procedimiento de Retiro de
+                                    Sistemas.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 7. Onicofagia -->
+                    <div class="procedure-item">
+                        <label class="procedure-trigger">
+                            <input type="checkbox" class="procedure-checkbox" id="proc-onicofagia">
+                            <span class="procedure-title">Uñas Artificiales en Condición de Onicofagia</span>
+                        </label>
+                        <div class="procedure-content">
+                            <ol>
+                                <li>Se realizará manicura drill según el procedimiento anteriormente mencionado.</li>
+                                <li>Se realizará la preparación de la uña con ayuda de una lima de gramaje 180, en
+                                    cuanto se evidencie los canales de adherencia se aplicarán los preparadores para
+                                    asegurar la fijación del producto.</li>
+                                <li>Se ubicarán los moldes de extensión en todas las uñas naturales. Según el nivel de
+                                    onicofagia la profesional decidirá si esculpirá o no una pre base.</li>
+                                <li>Se aplicará una capa delgada de base semipermanente y se sella en lámpara UV.</li>
+                                <li>Se realizará el esculpido del producto con el polímero y monómero según las
+                                    indicaciones del cliente. Tenga en cuenta que este sistema tiene unas
+                                    recomendaciones para su durabilidad (revise a continuación).</li>
+                                <li>La estructuración de la uña se realiza limando la superficie del acrílico con ayuda
+                                    de lima gramaje 180 y el drill con las brocas necesarias.</li>
+                                <li>Se realiza el maquillaje indicado por los gustos de la clienta y el producto que
+                                    desee ya sea en esmalte tradicional o en esmaltado semipermanente.</li>
+                            </ol>
+                            <div class="recommendations-box">
+                                <h4>RECOMENDACIONES Y ACLARACIONES PARA ONICOFAGIA</h4>
+                                <ul>
+                                    <li>Esta montura y/o retoque no cuenta con garantía.</li>
+                                    <li>El largo recomendado para este sistema es número 2.</li>
+                                    <li>Las uñas deben ser montadas únicamente en forma cuadrada.</li>
+                                    <li>No debe morder ni arrancar las uñas.</li>
+                                    <li>Su retoque debe ser cada 15 días.</li>
+                                </ul>
+                            </div>
+                            <label class="custom-checkbox nested-check">
+                                <input type="checkbox" class="proc-confirm" data-proc="Uñas en Condición de Onicofagia">
+                                <span class="checkbox-checkmark"></span>
+                                <span class="checkbox-label">Entiendo y acepto las condiciones especiales para
+                                    Onicofagia.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 5: CONSIDERACIONES DE ANOMALÍAS -->
+            <section class="form-section card-style">
+                <h2 class="section-title">5. Consideraciones Adicionales de Posibles Anomalías en Uña Natural</h2>
+                <p class="section-desc">Registre las anomalías identificadas en las uñas del cliente, indicando la mano
+                    y los dedos afectados.</p>
+
+                <div class="table-responsive">
+                    <table class="anomalies-table">
+                        <thead>
+                            <tr>
+                                <th>Posible Situación / Anomalía</th>
+                                <th>Mano Afectada</th>
+                                <th>Dedos Afectados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-anomaly="Onicolisis">
+                                <td class="anomaly-name"><strong>Onicolisis</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-onicolisis-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-onicolisis-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicolisis-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicolisis-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicolisis-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicolisis-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicolisis-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-anomaly="Onicomicosis">
+                                <td class="anomaly-name"><strong>Onicomicosis</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-omicosis-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-omicosis-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-omicosis-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-omicosis-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-omicosis-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-omicosis-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-omicosis-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-anomaly="Onicorrexis">
+                                <td class="anomaly-name"><strong>Onicorrexis</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-onicorrexis-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-onicorrexis-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicorrexis-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicorrexis-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicorrexis-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicorrexis-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-onicorrexis-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-anomaly="Leuconiquia">
+                                <td class="anomaly-name"><strong>Leuconiquia</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-leuconiquia-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-leuconiquia-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-leuconiquia-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-leuconiquia-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-leuconiquia-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-leuconiquia-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-leuconiquia-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-anomaly="Hematoma subungueal">
+                                <td class="anomaly-name"><strong>Hematoma subungueal</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-hematoma-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-hematoma-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-hematoma-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-hematoma-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-hematoma-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-hematoma-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-hematoma-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-anomaly="Hematoma subungueal astillado">
+                                <td class="anomaly-name"><strong>Hematoma subungueal astillado</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-astillado-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-astillado-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-astillado-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-astillado-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-astillado-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-astillado-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-astillado-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-anomaly="Uñas estriadas">
+                                <td class="anomaly-name"><strong>Uñas estriadas</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-estriadas-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-estriadas-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-estriadas-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-estriadas-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-estriadas-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-estriadas-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-estriadas-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-anomaly="Paroniquia">
+                                <td class="anomaly-name"><strong>Paroniquia</strong></td>
+                                <td>
+                                    <div class="flex-row gap-small">
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-paroniquia-mano"
+                                                value="Izquierda"><span>Izquierda</span></label>
+                                        <label class="pill-checkbox"><input type="checkbox" name="ano-paroniquia-mano"
+                                                value="Derecha"><span>Derecha</span></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="finger-select-wrapper">
+                                        <label class="finger-chk"><input type="checkbox" name="ano-paroniquia-dedos"
+                                                value="Pulgar"><span>P</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-paroniquia-dedos"
+                                                value="Índice"><span>Í</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-paroniquia-dedos"
+                                                value="Medio"><span>M</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-paroniquia-dedos"
+                                                value="Anular"><span>A</span></label>
+                                        <label class="finger-chk"><input type="checkbox" name="ano-paroniquia-dedos"
+                                                value="Meñique"><span>m</span></label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="additional-questions margin-top-large">
+                    <div class="question-row">
+                        <span class="question-text">1. ¿El cliente trae uñas artificiales aplicadas en otro
+                            establecimiento?</span>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="uñas-otro-lado"
+                                    value="SI"><span>SÍ</span></label>
+                            <label class="radio-option"><input type="radio" name="uñas-otro-lado" value="NO"
+                                    checked><span>NO</span></label>
+                        </div>
+                    </div>
+                    <div class="question-row">
+                        <span class="question-text">2. ¿El cliente se retira uñas artificiales de otro establecimiento
+                            para iniciar nuevo proceso con El Imperio de las Uñas?</span>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="retiro-otro-lado"
+                                    value="SI"><span>SÍ</span></label>
+                            <label class="radio-option"><input type="radio" name="retiro-otro-lado" value="NO"
+                                    checked><span>NO</span></label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: ESTADO DE SALUD GENERAL -->
+            <section class="form-section card-style">
+                <h2 class="section-title">6. Diagnóstico de Salud General</h2>
+
+                <div class="form-group margin-bottom-medium">
+                    <div class="question-row flex-start">
+                        <span class="question-text">¿Manifiesta tener enfermedades de base, graves o catastróficas que
+                            afecten el procedimiento? <span class="required">*</span></span>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="enfermedad-base" value="SI"
+                                    id="enf-si"><span>SÍ</span></label>
+                            <label class="radio-option"><input type="radio" name="enfermedad-base" value="NO"
+                                    id="enf-no" checked><span>NO</span></label>
+                        </div>
+                    </div>
+                    <div class="conditional-input" id="conditional-enfermedad">
+                        <label for="enfermedad-detalle">Por favor, detalle la enfermedad o condición médica:</label>
+                        <textarea id="enfermedad-detalle" rows="2"
+                            placeholder="Detalles de la condición médica..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="question-row flex-start">
+                        <span class="question-text">¿El cliente es menor de edad? <span class="required">*</span></span>
+                        <div class="radio-group">
+                            <label class="radio-option"><input type="radio" name="menor-edad" value="SI"
+                                    id="menor-si"><span>SÍ</span></label>
+                            <label class="radio-option"><input type="radio" name="menor-edad" value="NO" id="menor-no"
+                                    checked><span>NO</span></label>
+                        </div>
+                    </div>
+                    <div class="conditional-input" id="conditional-acudiente">
+                        <label for="acudiente-autorizacion">Autorización del Acudiente (Nombre y Cédula del tutor legal)
+                            <span class="required">*</span></label>
+                        <input type="text" id="acudiente-autorizacion" placeholder="Ej. María Pérez - C.C. 10203040">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: DESCRIPCIÓN PROFESIONAL (LLENADO POR LA MANICURISTA) -->
+            <section class="form-section card-style manicurist-section">
+                <h2 class="section-title">7. Diagnóstico y Observaciones de la Profesional</h2>
+                <p class="section-desc">Sección obligatoria para ser rellenada por la manicurista a cargo.</p>
+
+                <div class="input-group">
+                    <label for="prof-resultados">Manifestación de resultados según las circunstancias explicadas y
+                        patologías identificadas:</label>
+                    <textarea id="prof-resultados" rows="3"
+                        placeholder="Dadas las circunstancias descritas, se prevé que el resultado del procedimiento sea..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="prof-recomendaciones">Recomendaciones de la profesional:</label>
+                    <textarea id="prof-recomendaciones" rows="3"
+                        placeholder="Recomendaciones de cuidado posterior, tiempos de retoque personalizado, etc..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="prof-observaciones">Observaciones adicionales:</label>
+                    <textarea id="prof-observaciones" rows="3"
+                        placeholder="Otras anotaciones importantes del servicio..."></textarea>
+                </div>
+            </section>
+
+            <!-- SECTION 8: DATE AND SEDE -->
+            <section class="form-section card-style">
+                <h2 class="section-title">8. Fecha y Sede del Procedimiento</h2>
+                <div class="grid-col-3">
+                    <div class="input-group">
+                        <label>Ciudad de Suscripción</label>
+                        <input type="text" id="documento-ciudad" value="Bogotá, D.C." readonly class="readonly-input">
+                    </div>
+                    <div class="input-group">
+                        <label for="documento-fecha">Fecha del Servicio <span class="required">*</span></label>
+                        <input type="date" id="documento-fecha" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="documento-sede">Sede <span class="required">*</span></label>
+                        <input type="text" id="documento-sede" required placeholder="Nombre o número de la sede">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 9: FIRMAS -->
+            <section class="form-section card-style signatures-section">
+                <h2 class="section-title">9. Firmas de Aceptación</h2>
+                <p class="legal-declaration-summary">
+                    Declaro que he tenido el tiempo necesario para leer y comprender el presente consentimiento el cual
+                    firmo de manera voluntaria dando mi consentimiento para que la Profesional y el personal auxiliar si
+                    así se precisa me efectúen los procedimientos que solicite.
+                </p>
+
+                <div class="signatures-grid">
+
+                    <div class="signature-card official-signature">
+                        <div class="signature-canvas-container">
+                            <div class="ceo-signature-stamp">
+                                <span class="ceo-script">Lizeth Valeria Chacón Sánchez</span>
+                                <div class="ceo-stamp-text">Representante Legal</div>
+                            </div>
+                        </div>
+                        <div class="signature-info">
+                            <span class="sign-name">Lizeth Valeria Chacón Sánchez</span>
+                            <span class="sign-role">Gerente General</span>
+                            <span class="sign-company">El Imperio de las Uñas By Paula SAS</span>
+                        </div>
+                    </div>
+
+                    <div class="signature-card">
+                        <div class="signature-canvas-container">
+                            <canvas id="canvas-professional" width="300" height="120"></canvas>
+                            <button type="button" class="btn-clear-sig"
+                                data-canvas="canvas-professional">Limpiar</button>
+                        </div>
+                        <div class="signature-info">
+                            <input type="text" id="nombre-profesional" required placeholder="Nombre de la Manicurista"
+                                class="inline-signature-input">
+                            <span class="sign-role">Profesional Manicurista</span>
+                        </div>
+                    </div>
+
+                    <div class="signature-card">
+                        <div class="signature-canvas-container">
+                            <canvas id="canvas-client" width="300" height="120"></canvas>
+                            <button type="button" class="btn-clear-sig" data-canvas="canvas-client">Limpiar</button>
+                        </div>
+                        <div class="signature-info">
+                            <input type="text" id="nombre-firma-cliente" required placeholder="Nombre de quien firma"
+                                class="inline-signature-input">
+                            <span class="sign-role">Cliente y/o Acudiente</span>
+                            <div class="flex-row inline-cc">
+                                <label for="cc-firma-cliente">C.C./ID:</label>
+                                <input type="text" id="cc-firma-cliente" required placeholder="Número de Documento"
+                                    class="inline-signature-input short">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="actions-panel no-print">
+                <button type="button" id="btn-print" class="btn-primary">
+                    <span class="btn-icon">🖨️</span> Guardar y Generar PDF / Imprimir
+                </button>
+                <button type="reset" id="btn-reset" class="btn-secondary">
+                    Reestablecer Formulario
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

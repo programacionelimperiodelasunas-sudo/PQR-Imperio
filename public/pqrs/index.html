@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Registro - El Imperio de las Uñas</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Alex+Brush&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="uñas/style.css">
+    <style>
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .portal-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 35px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(195, 140, 127, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .portal-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(195, 140, 127, 0.15);
+        }
+
+        .portal-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            width: 100%;
+        }
+
+        .portal-desc {
+            font-size: 0.95rem;
+            color: var(--gray-text);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .portal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn-portal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background-color: var(--primary-light);
+            color: var(--dark);
+            border: 1.5px solid var(--border-color);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-portal:hover {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(195, 140, 127, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-portal-icon {
+            font-size: 1.3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container" style="max-width: 850px; padding-top: 60px;">
+        <header class="main-header">
+            <div class="brand-badge">Sistema Integrado de Control</div>
+            <h1 class="brand-title">El Imperio de las Uñas</h1>
+            <p class="brand-subtitle">Gestión de Consentimientos y Políticas de Datos</p>
+        </header>
+
+        <div class="portal-grid">
+            <!-- CLIENTS SECTION -->
+            <div class="portal-section">
+                <h2 class="portal-section-title">Clientes</h2>
+                <p class="portal-desc">Acceso a los consentimientos informados de procedimientos estéticos y la
+                    autorización de tratamiento de datos personales para clientes.</p>
+                <div class="portal-buttons">
+                    <a href="uñas/pqr-uñas.html" class="btn-portal">
+                        <span class="btn-portal-icon">💅</span>
+                        <span>Uñas Artificiales</span>
+                    </a>
+                    <a href="Cejas/pqr-ceja.html" class="btn-portal">
+                        <span class="btn-portal-icon">👁️</span>
+                        <span>Cejas y Pestañas</span>
+                    </a>
+                    <a href="pedicura/pqr-pedicure.html" class="btn-portal">
+                        <span class="btn-portal-icon">🦶</span>
+                        <span>Pedicura Especializada</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ADMINISTRATION SECTION -->
+            <div class="portal-section">
+                <h2 class="portal-section-title">Personal y Control</h2>
+                <p class="portal-desc">Acceso a la vinculación y protección de datos para manicuristas o contratistas de
+                    la compañía.</p>
+                <div class="portal-buttons">
+                    <a href="contratistas/autorizacion-contratista.html" class="btn-portal">
+                        <span class="btn-portal-icon">🤝</span>
+                        <span>Contratistas y Manicuristas</span>
+                    </a>
+                    <a href="politica-datos.html" class="btn-portal">
+                        <span class="btn-portal-icon">📜</span>
+                        <span>Política de Datos (Completa)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
