@@ -75,14 +75,14 @@ CREATE TABLE IF NOT EXISTS anomalias_unas (
 CREATE TABLE IF NOT EXISTS condiciones_especiales (
    registro_id INTEGER PRIMARY KEY,
    posible_condicion_piel INTEGER DEFAULT 0,
-   especifique_condicion_piel TEXT NOT NULL,
+   especifique_condicion_piel TEXT,
    posible_condicion_pestañas INTEGER DEFAULT 0,
-   especifique_condicion_pestañas TEXT NOT NULL,
+   especifique_condicion_pestañas TEXT,
    FOREIGN KEY (registro_id) REFERENCES registros(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS observaciones_prof (
-    registro_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    registro_id INTEGER PRIMARY KEY,
     patologia_detectada TEXT NOT NULL,
     recomendaciones TEXT NOT NULL,
     adicionales TEXT NOT NULL,
