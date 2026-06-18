@@ -10,143 +10,456 @@
         rel="stylesheet">
     <link rel="stylesheet" href="uñas/style.css">
     <style>
-        .portal-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 40px;
+        /* Modern dashboard style updates */
+        .portal-container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        @media (max-width: 768px) {
-            .portal-grid {
-                grid-template-columns: 1fr;
+        /* Segmented control for tabs */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+            background-color: var(--primary-light);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid rgba(195, 140, 127, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--gray-text);
+            cursor: pointer;
+            border-radius: 30px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(195, 140, 127, 0.25);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .portal-section {
+        /* Premium Card Design */
+        .service-card {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 35px;
+            padding: 30px;
             box-shadow: var(--shadow);
             border: 1px solid rgba(195, 140, 127, 0.15);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            opacity: 0;
             transition: var(--transition);
         }
 
-        .portal-section:hover {
+        .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(195, 140, 127, 0.15);
+            box-shadow: 0 15px 35px rgba(195, 140, 127, 0.15);
+            border-color: rgba(195, 140, 127, 0.4);
         }
 
-        .portal-section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            width: 100%;
+        .service-card:hover::before {
+            opacity: 1;
         }
 
-        .portal-desc {
-            font-size: 0.95rem;
-            color: var(--gray-text);
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .portal-buttons {
+        .card-header-flex {
             display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 15px;
-            width: 100%;
+            margin-bottom: 15px;
         }
 
-        .btn-portal {
+        .card-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 16px 24px;
+            font-size: 1.5rem;
+            color: var(--accent);
+            border: 1.5px solid rgba(195, 140, 127, 0.2);
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .card-description {
+            font-size: 0.88rem;
+            color: var(--gray-text);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Tags for items covered */
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 25px;
+        }
+
+        .tag {
+            background-color: #f7edea;
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 0.5px solid rgba(195, 140, 127, 0.15);
+        }
+
+        /* Premium card action button */
+        .btn-card-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
             background-color: var(--primary-light);
             color: var(--dark);
             border: 1.5px solid var(--border-color);
             border-radius: 30px;
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 0.9rem;
             text-decoration: none;
             transition: var(--transition);
+            margin-top: auto;
         }
 
-        .btn-portal:hover {
+        .btn-card-action:hover {
             background-color: var(--primary);
             color: #ffffff;
             border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(195, 140, 127, 0.2);
-            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(195, 140, 127, 0.25);
         }
 
-        .btn-portal-icon {
-            font-size: 1.3rem;
+        .btn-card-action svg {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-card-action:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Auditor Access link at footer */
+        .auditor-access-container {
+            margin-top: 50px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .auditor-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-text);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px dashed var(--border-color);
+            background-color: var(--background);
+            transition: var(--transition);
+        }
+
+        .auditor-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background-color: rgba(139, 61, 48, 0.03);
+        }
+
+        @media (max-width: 600px) {
+            .portal-container {
+                padding: 10px;
+            }
+            .brand-title {
+                font-size: 2rem;
+            }
+            .brand-subtitle {
+                font-size: 0.75rem;
+                letter-spacing: 1.5px;
+            }
+            .tabs-container {
+                flex-direction: column;
+                border-radius: 12px;
+                gap: 5px;
+                padding: 6px;
+            }
+            .tab-btn {
+                border-radius: 8px;
+                padding: 10px;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .service-card {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="app-container" style="max-width: 850px; padding-top: 60px;">
+    <div class="app-container portal-container" style="padding-top: 50px;">
         <header class="main-header">
             <div class="brand-badge">Sistema Integrado de Control</div>
             <h1 class="brand-title">El Imperio de las Uñas</h1>
             <p class="brand-subtitle">Gestión de Consentimientos y Políticas de Datos</p>
         </header>
 
-        <div class="portal-grid">
-            <!-- CLIENTS SECTION -->
-            <div class="portal-section">
-                <h2 class="portal-section-title">Clientes</h2>
-                <p class="portal-desc">Acceso a los consentimientos informados de procedimientos estéticos y la
-                    autorización de tratamiento de datos personales para clientes.</p>
-                <div class="portal-buttons">
-                    <a href="uñas/pqr-uñas.html" class="btn-portal">
-                        <span class="btn-portal-icon">💅</span>
-                        <span>Uñas Artificiales</span>
-                    </a>
-                    <a href="Cejas/pqr-ceja.html" class="btn-portal">
-                        <span class="btn-portal-icon">👁️</span>
-                        <span>Cejas y Pestañas</span>
-                    </a>
-                    <a href="pedicura/pqr-pedicure.html" class="btn-portal">
-                        <span class="btn-portal-icon">🦶</span>
-                        <span>Pedicura Especializada</span>
+        <!-- Segmented Tab Navigation -->
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab('clientes-section', this)">
+                <span>📋</span> Clientes
+            </button>
+            <button class="tab-btn" onclick="switchTab('personal-section', this)">
+                <span>💼</span> Personal y Control
+            </button>
+        </div>
+
+        <!-- CLIENTS CONTENT -->
+        <div id="clientes-section" class="tab-content active">
+            <div class="cards-grid">
+                <!-- Card 1: Uñas -->
+                <div class="service-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-wrapper">💅</div>
+                            <h2 class="card-title">Uñas Artificiales</h2>
+                        </div>
+                        <p class="card-description">
+                            Consentimiento para procedimientos estéticos de uñas artificiales y tratamiento de datos personales de clientes.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">Manicura Rusa</span>
+                            <span class="tag">Acrílico</span>
+                            <span class="tag">Polygel</span>
+                            <span class="tag">Base Rubber</span>
+                            <span class="tag">Onicofagia</span>
+                        </div>
+                    </div>
+                    <a href="uñas/pqr-uñas.html" class="btn-card-action">
+                        <span>Iniciar Registro</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
                 </div>
-            </div>
 
-            <!-- ADMINISTRATION SECTION -->
-            <div class="portal-section">
-                <h2 class="portal-section-title">Personal y Control</h2>
-                <p class="portal-desc">Acceso a la vinculación y protección de datos para manicuristas o contratistas de
-                    la compañía.</p>
-                <div class="portal-buttons">
-                    <a href="contratistas/autorizacion-contratista.html" class="btn-portal">
-                        <span class="btn-portal-icon">🤝</span>
-                        <span>Contratistas y Manicuristas</span>
+                <!-- Card 2: Cejas -->
+                <div class="service-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-wrapper">👁️</div>
+                            <h2 class="card-title">Cejas y Pestañas</h2>
+                        </div>
+                        <p class="card-description">
+                            Autorización para diseño estético, depilación, lifting, sombreado y extensiones semipermanentes de pestañas.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">Depilación</span>
+                            <span class="tag">Sombreado Bigen</span>
+                            <span class="tag">Laminado</span>
+                            <span class="tag">Pestañas Pelo a Pelo</span>
+                            <span class="tag">Lifting</span>
+                        </div>
+                    </div>
+                    <a href="Cejas/pqr-ceja.html" class="btn-card-action">
+                        <span>Iniciar Registro</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
-                    <a href="marketing/autorizacion-marketing.html" class="btn-portal">
-                        <span class="btn-portal-icon">🎙️</span>
-                        <span>Uso de Imagen y Voz (Marketing)</span>
-                    </a>
-                    <a href="politica-datos.html" class="btn-portal">
-                        <span class="btn-portal-icon">📜</span>
-                        <span>Política de Datos (Completa)</span>
+                </div>
+
+                <!-- Card 3: Pedicura -->
+                <div class="service-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-wrapper">🦶</div>
+                            <h2 class="card-title">Pedicura Especializada</h2>
+                        </div>
+                        <p class="card-description">
+                            Consentimiento y diagnóstico para tratamientos estéticos preventivos y cuidado de pies.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">Pedicura Spa</span>
+                            <span class="tag">Reconstrucción</span>
+                            <span class="tag">Onicocriptosis</span>
+                            <span class="tag">Posible Onicomicosis</span>
+                        </div>
+                    </div>
+                    <a href="pedicura/pqr-pedicure.html" class="btn-card-action">
+                        <span>Iniciar Registro</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>
                 </div>
             </div>
         </div>
+
+        <!-- PERSONAL & CONTROL CONTENT -->
+        <div id="personal-section" class="tab-content">
+            <div class="cards-grid">
+                <!-- Card 4: Contratistas -->
+                <div class="service-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-wrapper">🤝</div>
+                            <h2 class="card-title">Contratistas</h2>
+                        </div>
+                        <p class="card-description">
+                            Vinculación, acuerdos de servicio y autorización de uso de datos para colaboradores y manicuristas de la compañía.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">Manicuristas</span>
+                            <span class="tag">Contratistas</span>
+                            <span class="tag">Acuerdo de Servicios</span>
+                            <span class="tag">Protección de Datos</span>
+                        </div>
+                    </div>
+                    <a href="contratistas/autorizacion-contratista.html" class="btn-card-action">
+                        <span>Ver Documento</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </div>
+
+                <!-- Card 5: Marketing -->
+                <div class="service-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-wrapper">🎙️</div>
+                            <h2 class="card-title">Uso de Imagen y Voz</h2>
+                        </div>
+                        <p class="card-description">
+                            Autorización legal para el registro audiovisual y promoción en redes sociales con fines comerciales y de marketing.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">Redes Sociales</span>
+                            <span class="tag">Fotografías</span>
+                            <span class="tag">Videos</span>
+                            <span class="tag">Consentimiento Comercial</span>
+                        </div>
+                    </div>
+                    <a href="marketing/autorizacion-marketing.html" class="btn-card-action">
+                        <span>Ver Documento</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </div>
+
+                <!-- Card 6: Politica de Datos -->
+                <div class="service-card">
+                    <div>
+                        <div class="card-header-flex">
+                            <div class="card-icon-wrapper">📜</div>
+                            <h2 class="card-title">Política de Datos</h2>
+                        </div>
+                        <p class="card-description">
+                            Documentación legal completa sobre el tratamiento y la protección de datos personales de la compañía.
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">Ley 1581 de 2012</span>
+                            <span class="tag">Habeas Data</span>
+                            <span class="tag">Privacidad</span>
+                            <span class="tag">Términos y Condiciones</span>
+                        </div>
+                    </div>
+                    <a href="politica-datos.html" class="btn-card-action">
+                        <span>Consultar Política</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Internal Auditor Access Link -->
+        <div class="auditor-access-container">
+            <a href="cajero/cajero.html" class="auditor-link">
+                <span>🔐</span> Módulo de Auditoría (Acceso Interno Cajero)
+            </a>
+        </div>
     </div>
+
+    <!-- Script to toggle sections -->
+    <script>
+        function switchTab(tabId, btn) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Deactivate all tab buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Show current active tab and set active button
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+    </script>
 </body>
 
 </html>

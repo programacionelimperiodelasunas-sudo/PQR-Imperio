@@ -716,7 +716,16 @@
                     </div>
                     <div class="input-group">
                         <label for="documento-sede">Sede <span class="required">*</span></label>
-                        <input type="text" id="documento-sede" required placeholder="Nombre o número de la sede">
+                        <select id="documento-sede" required style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-color); border-radius: 8px; font-family: 'Montserrat', sans-serif; background-color: var(--background);">
+                            <option value="" disabled selected>Seleccione sede...</option>
+                            <option value="Sede Restrepo">Sede Restrepo</option>
+                            <option value="Sede Engativa">Sede Engativá</option>
+                            <option value="Sede Modelia">Sede Modelia</option>
+                            <option value="Sede Kennedy">Sede Kennedy</option>
+                            <option value="Sede Teusaquillo">Sede Teusaquillo</option>
+                            <option value="Sede Suba">Sede Suba</option>
+                            <option value="Sede Soacha">Sede Soacha</option>
+                        </select>
                     </div>
                 </div>
             </section>

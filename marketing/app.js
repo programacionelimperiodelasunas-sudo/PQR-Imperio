@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const API_URL = "http://localhost:8787"; // Cambiar por tu URL de Cloudflare Worker en producción
+
     // 1. AUTO-SET DATE
     const dateInput = document.getElementById("documento-fecha");
     if (dateInput) {
@@ -59,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.canvas.dispatchEvent(mouseEvent);
             }, { passive: false });
 
-            this.canvas.addEventListener("touchend", (e) => {
+            this.canvas.addEventListener("touchend", () => {
                 const mouseEvent = new MouseEvent("mouseup", {});
                 this.canvas.dispatchEvent(mouseEvent);
             });
@@ -68,8 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
         getMousePos(e) {
             const rect = this.canvas.getBoundingClientRect();
             return {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
+                x: (e.clientX - rect.left) * (this.canvas.width / rect.width),
+                y: (e.clientY - rect.top) * (this.canvas.height / rect.height)
             };
         }
 
@@ -115,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const consentForm = document.getElementById("consent-form");
 
     if (btnPrint && consentForm) {
-        btnPrint.addEventListener("click", () => {
+        btnPrint.addEventListener("click", async () => {
             // Check form validations (HTML5 required attributes)
             if (!consentForm.checkValidity()) {
                 consentForm.reportValidity();
@@ -128,22 +130,65 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // All validation passed, trigger native print view
-            window.print();
+            btnPrint.disabled = true;
+            const originalText = btnPrint.innerHTML;
+            btnPrint.innerText = "Guardando autorización...";
 
-            // Reset form and UI states
-            consentForm.reset();
-            if (collaboratorPad) collaboratorPad.clear();
+            try {
+                const payload = {
+                    tipo_pqr: "Uso de Imagen y Voz",
+                    nombre_cliente: document.getElementById("colaborador-nombre").value,
+                    tipo_documento: document.getElementById("colaborador-tipo-doc").value,
+                    documento: document.getElementById("colaborador-numero-doc").value,
+                    ciudad_expedicion: document.getElementById("colaborador-expedicion").value,
+                    telefono: document.getElementById("colaborador-telefono").value,
+                    es_menor_edad: false,
+                    tiene_enfermedad: false,
+                    sede: "Marketing Digital",
+                    nombre_prof: "Lizeth Valeria Chacón Sánchez",
+                    firma_profesional: "CEO Stamp", // Constant CEO signature indicator
+                    firma_cliente: collaboratorPad.canvas.toDataURL("image/png"),
+                    observaciones_prof: {
+                        patologia_detectada: "N/A",
+                        recomendaciones: "Autorización de uso de imagen, voz y datos personales para marketing/podcast.",
+                        adicionales: `Email: ${document.getElementById("colaborador-email").value}`
+                    }
+                };
 
-            // Re-initialize date
-            if (dateInput) {
-                const today = new Date();
-                const yyyy = today.getFullYear();
-                let mm = today.getMonth() + 1;
-                let dd = today.getDate();
-                if (dd < 10) dd = '0' + dd;
-                if (mm < 10) mm = '0' + mm;
-                dateInput.value = `${yyyy}-${mm}-${dd}`;
+                const res = await fetch(`${API_URL}/api/registros`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.error || "Error al guardar el registro");
+                }
+
+                alert("¡Autorización guardada con éxito en la base de datos!");
+                window.print();
+
+                // Reset form and UI states
+                consentForm.reset();
+                if (collaboratorPad) collaboratorPad.clear();
+
+                // Re-initialize date
+                if (dateInput) {
+                    const today = new Date();
+                    const yyyy = today.getFullYear();
+                    let mm = today.getMonth() + 1;
+                    let dd = today.getDate();
+                    if (dd < 10) dd = '0' + dd;
+                    if (mm < 10) mm = '0' + mm;
+                    dateInput.value = `${yyyy}-${mm}-${dd}`;
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Ocurrió un error al guardar en la base de datos: " + err.message);
+            } finally {
+                btnPrint.disabled = false;
+                btnPrint.innerHTML = originalText;
             }
         });
     }

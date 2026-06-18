@@ -109,8 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
         getMousePos(e) {
             const rect = this.canvas.getBoundingClientRect();
             return {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
+                x: (e.clientX - rect.left) * (this.canvas.width / rect.width),
+                y: (e.clientY - rect.top) * (this.canvas.height / rect.height)
             };
         }
 

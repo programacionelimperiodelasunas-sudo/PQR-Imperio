@@ -90,17 +90,21 @@ export default {
 			
 			// POST /api/auth/register
 			if (path === "/api/auth/register" && method === "POST") {
-				const { nombre, correo, contraseña, rol } = await request.json();
+				const { nombre, correo, contraseña, rol, sede } = await request.json();
 				if (!nombre || !correo || !contraseña || !rol) {
 					return jsonResponse({ error: "Todos los campos son obligatorios" }, 400);
 				}
 
 				// Insert user
 				const result = await env.pqr_d1.prepare(
-					"INSERT INTO users (nombre, correo, contraseña, rol) VALUES (?, ?, ?, ?)"
+					"INSERT INTO users (nombre, correo, contraseña, rol, sede) VALUES (?, ?, ?, ?, ?)"
 				)
-				.bind(nombre, correo, contraseña, rol)
+				.bind(nombre, correo, contraseña, rol, roles_need_sede(rol) ? (sede || null) : null)
 				.run();
+
+				function roles_need_sede(r) {
+					return r === "cajero";
+				}
 
 				return jsonResponse({ success: true, message: "Usuario registrado exitosamente" }, 201);
 			}
@@ -113,7 +117,7 @@ export default {
 				}
 
 				const user = await env.pqr_d1.prepare(
-					"SELECT id, nombre, correo, rol FROM users WHERE correo = ? AND contraseña = ?"
+					"SELECT id, nombre, correo, rol, sede FROM users WHERE correo = ? AND contraseña = ?"
 				)
 				.bind(correo, contraseña)
 				.first();
@@ -129,9 +133,29 @@ export default {
 
 			// GET /api/registros (List basic registry details)
 			if (path === "/api/registros" && method === "GET") {
-				const { results } = await env.pqr_d1.prepare(
-					"SELECT id, tipo_pqr, nombre_cliente, documento, fecha_registro, sede, nombre_prof FROM registros ORDER BY fecha_registro DESC"
-				).all();
+				const rolParam = url.searchParams.get("rol");
+				const sedeParam = url.searchParams.get("sede");
+
+				let query = "SELECT id, tipo_pqr, nombre_cliente, documento, fecha_registro, sede, nombre_prof FROM registros";
+				let conditions = [];
+				let params = [];
+
+				if (rolParam && rolParam !== "administrador") {
+					// Cashiers only see records for nails, brows, and pedicure
+					conditions.push("tipo_pqr IN ('Uñas Artificiales', 'Cejas y Pestañas', 'Pedicura Especializada')");
+					if (sedeParam) {
+						conditions.push("sede = ?");
+						params.push(sedeParam);
+					}
+				}
+
+				if (conditions.length > 0) {
+					query += " WHERE " + conditions.join(" AND ");
+				}
+
+				query += " ORDER BY fecha_registro DESC";
+
+				const { results } = await env.pqr_d1.prepare(query).bind(...params).all();
 				return jsonResponse(results);
 			}
 

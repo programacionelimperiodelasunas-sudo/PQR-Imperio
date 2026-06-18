@@ -807,8 +807,56 @@ body {
     box-shadow: 0 4px 15px rgba(195, 140, 127, 0.25);
 }
 
-.nav-tab-icon {
-    font-size: 1.1rem;
+
+/* RESPONSIVE MEDIA STYLES */
+@media (max-width: 600px) {
+    body {
+        padding: 15px 10px;
+    }
+
+    .brand-title {
+        font-size: 1.8rem;
+    }
+
+    .brand-subtitle {
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
+    }
+
+    .card-style {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 1.15rem;
+    }
+
+    .grid-col-3 {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .signature-canvas-container canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .procedure-trigger {
+        padding: 12px 15px;
+        font-size: 0.9rem;
+    }
+
+    .signatures-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .btn-submit {
+        padding: 14px 20px;
+        font-size: 0.95rem;
+    }
 }
 
 /* PRINT MEDIA STYLES */

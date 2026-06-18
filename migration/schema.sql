@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS users (
     nombre TEXT NOT NULL,
     correo TEXT NOT NULL UNIQUE,
     contraseña TEXT NOT NULL,
-    rol TEXT NOT NULL
+    rol TEXT NOT NULL,
+    sede TEXT
 );
 
 CREATE TABLE IF NOT EXISTS registros (
