@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Auditoría - Registro de Consentimientos (PQR)</title>
+    <!-- Premium Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Alex+Brush&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../uñas/style.css">
+    <link rel="stylesheet" href="cajero.css">
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div id="login-container" class="login-wrapper">
+        <div class="login-card">
+            <header class="main-header" style="margin-bottom: 25px; border-bottom: none; padding-bottom: 0;">
+                <div class="brand-badge">Acceso de Seguridad</div>
+                <h1 class="brand-title" style="font-size: 2.1rem; margin-top: 5px;">Imperio Nails</h1>
+            </header>
+            
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <h2 class="login-title">Iniciar Sesión</h2>
+                <p class="login-subtitle">Ingresa tus credenciales autorizadas de cajero o administrador.</p>
+                
+                <div class="input-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <input type="email" id="login-email" required placeholder="correo@ejemplo.com">
+                </div>
+                
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                
+                <div id="login-error" style="color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-top: 10px; display: none;"></div>
+                
+                <button type="submit" class="login-btn">Ingresar al Sistema</button>
+                
+                <div class="login-toggle">
+                    <a href="../index/index.html" style="color: var(--gray-text); display: block; margin-bottom: 8px;">← Volver al Portal</a>
+                    ¿No tienes cuenta? <a href="#" onclick="toggleAuthMode(true)">Registrarse</a>
+                </div>
+            </form>
+            
+            <!-- Register Form -->
+            <form id="register-form" onsubmit="handleRegister(event)" style="display: none;">
+                <h2 class="login-title">Registrar Usuario</h2>
+                <p class="login-subtitle">Crea una nueva cuenta de cajero o administrador de auditoría.</p>
+                
+                <div class="input-group">
+                    <label for="reg-name">Nombre Completo</label>
+                    <input type="text" id="reg-name" required placeholder="Tu nombre">
+                </div>
+                
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="reg-email">Correo Electrónico</label>
+                    <input type="email" id="reg-email" required placeholder="correo@ejemplo.com">
+                </div>
+                
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="reg-password">Contraseña</label>
+                    <input type="password" id="reg-password" required placeholder="••••••••">
+                </div>
+                
+                <div class="input-group" style="margin-top: 15px;">
+                    <label for="reg-role">Rol</label>
+                    <select id="reg-role" required onchange="handleRegRoleChange(this.value)">
+                        <option value="cajero" selected>Cajero / Auditor</option>
+                        <option value="administrador">Administrador</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="reg-sede-wrapper" style="margin-top: 15px;">
+                    <label for="reg-sede">Sede Asignada <span class="required">*</span></label>
+                    <select id="reg-sede" required>
+                        <option value="" disabled selected>Seleccione sede...</option>
+                        <option value="Sede Restrepo">Sede Restrepo</option>
+                        <option value="Sede Engativa">Sede Engativá</option>
+                        <option value="Sede Modelia">Sede Modelia</option>
+                        <option value="Sede Kennedy">Sede Kennedy</option>
+                        <option value="Sede Teusaquillo">Sede Teusaquillo</option>
+                        <option value="Sede Suba">Sede Suba</option>
+                        <option value="Sede Soacha">Sede Soacha</option>
+                    </select>
+                </div>
+                
+                <div id="reg-error" style="color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-top: 10px; display: none;"></div>
+                <div id="reg-success" style="color: #2e7d32; font-size: 0.85rem; font-weight: 600; margin-top: 10px; display: none;"></div>
+                
+                <button type="submit" class="login-btn">Registrar Usuario</button>
+                
+                <p class="login-toggle">¿Ya tienes cuenta? <a href="#" onclick="toggleAuthMode(false)">Iniciar Sesión</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div id="dashboard-container" style="display: none;">
+        <div class="app-container">
+            <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <a href="../index/index.html" class="nav-tab"
+                    style="display: inline-flex; padding: 8px 16px; font-size: 0.85rem; border-radius: 20px; text-decoration: none; border: 1.5px solid var(--border-color); color: var(--gray-text); font-weight: 600; background: var(--card-bg);">
+                    <span>← Volver al Portal</span>
+                </a>
+                <div id="logged-user-area" class="user-badge">
+                    <span id="logged-user-name">Usuario</span>
+                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            </div>
+            
+            <!-- Brand Header -->
+            <header class="main-header">
+                <div class="brand-badge">Módulo de Auditoría y Control</div>
+                <h1 class="brand-title">Registro General de PQRs</h1>
+                <p class="brand-subtitle">BY PAULA SAS • NIT 901396476 - 1</p>
+                <div class="document-reference" id="dashboard-reference-text">Consulta y Auditoría de Consentimientos de Clientes</div>
+            </header>
+
+            <!-- Stats Cards Dashboard -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-total">0</div>
+                    <div class="stat-label">Total PQRs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-unas">0</div>
+                    <div class="stat-label" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5.5z"/><path d="m19 17 1 2.5 2.5.5-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg> Uñas
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-cejas">0</div>
+                    <div class="stat-label" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0z"></path><circle cx="12" cy="12" r="3"></circle></svg> Cejas
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-pedicura">0</div>
+                    <div class="stat-label" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-13.9.2"></path><path d="M9 22v-4h-4"></path></svg> Pedicura
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-contratistas">0</div>
+                    <div class="stat-label" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Contratos
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat-marketing">0</div>
+                    <div class="stat-label" style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m22 8-6 4 6 4V8Z"></path><rect width="14" height="12" x="2" y="6" rx="2" ry="2"></rect></svg> Imagen/Voz
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters Form -->
+            <div class="filter-panel">
+                <h3 class="section-title" style="font-size: 1.1rem; margin-bottom: 15px;">Filtros de Búsqueda</h3>
+                <div class="filter-grid">
+                    <div class="input-group">
+                        <label for="filter-search">Buscar Nombre o Documento</label>
+                        <input type="text" id="filter-search" placeholder="Escribe nombre o documento...">
+                    </div>
+                    <div class="input-group">
+                        <label for="filter-servicio">Tipo de Servicio</label>
+                        <select id="filter-servicio">
+                            <option value="todos">Todos los servicios</option>
+                            <option value="Uñas Artificiales">Uñas Artificiales</option>
+                            <option value="Cejas y Pestañas">Cejas y Pestañas</option>
+                            <option value="Pedicura Especializada">Pedicura Especializada</option>
+                            <option value="Contratistas y Manicuristas">Contratistas y Manicuristas</option>
+                            <option value="Uso de Imagen y Voz">Uso de Imagen y Voz</option>
+                        </select>
+                    </div>
+                    <div class="input-group" id="filter-sede-group">
+                        <label for="filter-sede">Sede</label>
+                        <select id="filter-sede">
+                            <option value="todos">Todas las sedes</option>
+                            <option value="Sede Restrepo">Sede Restrepo</option>
+                            <option value="Sede Engativa">Sede Engativá</option>
+                            <option value="Sede Modelia">Sede Modelia</option>
+                            <option value="Sede Kennedy">Sede Kennedy</option>
+                            <option value="Sede Teusaquillo">Sede Teusaquillo</option>
+                            <option value="Sede Suba">Sede Suba</option>
+                            <option value="Sede Soacha">Sede Soacha</option>
+                            <option value="Sede Administrativa">Sede Administrativa</option>
+                            <option value="Marketing Digital">Marketing Digital</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Records Table Section -->
+            <section class="records-section">
+                <div class="table-header-row">
+                    <h2 class="table-title">Historial de Registros</h2>
+                    <div class="no-print">
+                        <button class="btn-primary" style="padding: 10px 20px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px;" onclick="exportCSV()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Exportar Datos
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table" id="records-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Documento</th>
+                                <th>Servicio / Rol</th>
+                                <th>Firma / Autorizado</th>
+                                <th>Sede / Canal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Filled dynamically by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal-btn">&times;</span>
+            <div class="modal-header">
+                <div class="brand-badge" id="modal-service-badge">Uñas Artificiales</div>
+                <h2 class="brand-title" style="font-size: 2rem; margin-top: 5px;" id="modal-client-name">Nombre Cliente</h2>
+                <p class="brand-subtitle" id="modal-date-location">Bogotá, D.C. • 12 de Junio, 2026</p>
+            </div>
+            <div class="modal-body">
+                <div class="info-detail-grid">
+                    <div class="info-detail-item">
+                        <div class="info-detail-label">Documento de Identidad</div>
+                        <div class="info-detail-value" id="modal-client-doc">C.C. 1.020.304.050</div>
+                    </div>
+                    <div class="info-detail-item">
+                        <div class="info-detail-label">Teléfono / WhatsApp</div>
+                        <div class="info-detail-value" id="modal-client-phone">+57 300 123 4567</div>
+                    </div>
+                    <div class="info-detail-item">
+                        <div class="info-detail-label">Representante / Manicurista</div>
+                        <div class="info-detail-value" id="modal-prof-name">Adriana Torres</div>
+                    </div>
+                    <div class="info-detail-item">
+                        <div class="info-detail-label">Sede / Canal</div>
+                        <div class="info-detail-value" id="modal-sede-name">Sede Norte</div>
+                    </div>
+                </div>
+
+                <!-- Conditional health condition alert -->
+                <div id="modal-health-alert" class="alert-box danger" style="display: none; align-items: center; gap: 10px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; stroke: #c62828;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <div>
+                        <strong>Condición Especial de Salud:</strong>
+                        <span id="modal-health-detail">El cliente manifiesta tener diabetes de base.</span>
+                    </div>
+                </div>
+
+                <!-- Procedure Details -->
+                <div id="modal-procedures-section">
+                    <h3 class="section-title" style="font-size: 1.1rem; margin-top: 25px;">Procedimientos Autorizados</h3>
+                    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 25px;">
+                        <ul id="modal-procedures-list" style="margin-left: 20px; font-size: 0.95rem; line-height: 1.8;">
+                            <!-- Filled dynamically -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Professional Observations -->
+                <h3 class="section-title" id="modal-observations-title" style="font-size: 1.1rem;">Diagnóstico y Observaciones</h3>
+                <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 25px;">
+                    <div class="input-group" id="modal-results-group" style="margin-bottom: 15px;">
+                        <label style="color: var(--accent);">Resultados previstos / Datos adicionales:</label>
+                        <p style="font-size: 0.95rem;" id="modal-obs-results">N/A</p>
+                    </div>
+                    <div class="input-group" id="modal-recs-group" style="margin-bottom: 15px;">
+                        <label style="color: var(--accent);">Recomendaciones / Objeto:</label>
+                        <p style="font-size: 0.95rem;" id="modal-obs-recs">N/A</p>
+                    </div>
+                    <div class="input-group" id="modal-anom-group" style="margin-bottom: 0;">
+                        <label style="color: var(--accent);">Anomalías / Observaciones:</label>
+                        <p style="font-size: 0.95rem;" id="modal-obs-anom">N/A</p>
+                    </div>
+                </div>
+
+                <!-- Signatures status -->
+                <h3 class="section-title" id="modal-signatures-title" style="font-size: 1.1rem;">Firmas de Aceptación</h3>
+                <div class="modal-signature-block">
+                    <div class="modal-sig-card">
+                        <div class="sign-role" id="modal-sig-role-client">Cliente / Colaborador</div>
+                        <div style="height: 80px; display: flex; align-items: center; justify-content: center; font-family: 'Alex Brush', cursive; font-size: 1.8rem; color: #231f20;"
+                            id="modal-sig-client">
+                            Firma Digitalizada
+                        </div>
+                        <div class="sign-name" id="modal-sig-client-name">Nombre Cliente</div>
+                    </div>
+                    <div class="modal-sig-card">
+                        <div class="sign-role" id="modal-sig-role-prof">Representante / Profesional</div>
+                        <div style="height: 80px; display: flex; align-items: center; justify-content: center; font-family: 'Alex Brush', cursive; font-size: 1.8rem; color: #231f20;"
+                            id="modal-sig-prof">
+                            Firma Profesional
+                        </div>
+                        <div class="sign-name" id="modal-sig-prof-name">Nombre Profesional</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- Administrator Delete Button -->
+                <button type="button" id="modal-btn-delete" class="btn-delete-record" style="margin-right: auto; display: none; align-items: center; gap: 8px; justify-content: center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Eliminar Registro
+                </button>
+                <button type="button" class="btn-secondary" style="padding: 10px 20px;" onclick="closeModal()">Cerrar</button>
+                <button type="button" class="btn-primary" style="padding: 10px 20px;" onclick="window.print()">Imprimir Recibo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to connect to API -->
+    <script src="cajero.js"></script>
+</body>
+
+</html>

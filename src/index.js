@@ -63,7 +63,7 @@ export default {
 
 		try {
 			// ================= SIGNATURES SERVING ROUTE =================
-			
+
 			// GET /api/signatures/:filename
 			if (path.startsWith("/api/signatures/") && method === "GET") {
 				const filename = path.split("/").pop();
@@ -87,7 +87,7 @@ export default {
 			}
 
 			// ================= AUTH ROUTES =================
-			
+
 			// POST /api/auth/register
 			if (path === "/api/auth/register" && method === "POST") {
 				const { nombre, correo, contraseña, rol, sede } = await request.json();
@@ -99,8 +99,8 @@ export default {
 				const result = await env.pqr_d1.prepare(
 					"INSERT INTO users (nombre, correo, contraseña, rol, sede) VALUES (?, ?, ?, ?, ?)"
 				)
-				.bind(nombre, correo, contraseña, rol, roles_need_sede(rol) ? (sede || null) : null)
-				.run();
+					.bind(nombre, correo, contraseña, rol, roles_need_sede(rol) ? (sede || null) : null)
+					.run();
 
 				function roles_need_sede(r) {
 					return r === "cajero";
@@ -119,8 +119,8 @@ export default {
 				const user = await env.pqr_d1.prepare(
 					"SELECT id, nombre, correo, rol, sede FROM users WHERE correo = ? AND contraseña = ?"
 				)
-				.bind(correo, contraseña)
-				.first();
+					.bind(correo, contraseña)
+					.first();
 
 				if (!user) {
 					return jsonResponse({ error: "Credenciales incorrectas" }, 401);
@@ -180,7 +180,7 @@ export default {
 				const condiciones_especiales = await env.pqr_d1.prepare("SELECT * FROM condiciones_especiales WHERE registro_id = ?").bind(id).first() || null;
 				const observaciones_prof = await env.pqr_d1.prepare("SELECT * FROM observaciones_prof WHERE registro_id = ?").bind(id).first() || null;
 				const anamnesis_pedicure = await env.pqr_d1.prepare("SELECT * FROM anamnesis_pedicure WHERE registro_id = ?").bind(id).first() || null;
-				
+
 				const anomalias_unas_res = await env.pqr_d1.prepare("SELECT * FROM anomalias_unas WHERE registro_id = ?").bind(id).all();
 				const anomalias_unas = anomalias_unas_res.results || [];
 
@@ -223,7 +223,7 @@ export default {
 
 				// Validate main registry fields
 				const requiredFields = [
-					"tipo_pqr", "nombre_cliente", "tipo_documento", "documento", 
+					"tipo_pqr", "nombre_cliente", "tipo_documento", "documento",
 					"telefono", "sede", "nombre_prof", "firma_profesional", "firma_cliente"
 				];
 				for (const field of requiredFields) {
@@ -423,7 +423,7 @@ export default {
 
 				// Execute all statements transactionally
 				const results = await env.pqr_d1.batch(statements);
-				
+
 				// The first result metadata will contain the last row id of the 'registros' table insert
 				const registroId = results[0].meta.last_row_id;
 
