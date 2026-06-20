@@ -14,17 +14,21 @@ const deleteRecordBtn = document.getElementById("modal-btn-delete");
 // Auth Logic
 function checkAuth() {
     const userStr = localStorage.getItem("adminUser");
-    const loginContainer = document.getElementById("login-container");
     const dashboardContainer = document.getElementById("dashboard-container");
     const loggedUserArea = document.getElementById("logged-user-area");
     const loggedUserName = document.getElementById("logged-user-name");
 
     if (userStr) {
         const user = JSON.parse(userStr);
-        loginContainer.style.display = "none";
-        dashboardContainer.style.display = "block";
+        if (dashboardContainer) dashboardContainer.style.display = "block";
         if (loggedUserArea) loggedUserArea.style.display = "flex";
         if (loggedUserName) loggedUserName.innerText = `${user.nombre} (${user.rol.toUpperCase()})`;
+
+        const isAdmin = user.rol === "administrador";
+        const dashboardTabs = document.getElementById("dashboard-tabs");
+        if (dashboardTabs) {
+            dashboardTabs.style.display = isAdmin ? "flex" : "none";
+        }
 
         // Display delete option only for admin
         const statCards = document.querySelectorAll(".stat-card");
@@ -52,9 +56,11 @@ function checkAuth() {
         const refText = document.getElementById("dashboard-reference-text");
         const filterSedeGroup = document.getElementById("filter-sede-group");
         
-        if (user.rol === "cajero" && user.sede) {
-            refText.innerText = `Consulta de Consentimientos para: ${user.sede.toUpperCase()}`;
-            filterSedeGroup.style.display = "none"; // Hide branch selector for cashiers
+        if ((user.rol === "cajero" || user.rol === "profesional") && user.sede) {
+            refText.innerText = user.rol === "profesional"
+                ? `Mis Consentimientos Registrados - Sede: ${user.sede.toUpperCase()}`
+                : `Consulta de Consentimientos para: ${user.sede.toUpperCase()}`;
+            filterSedeGroup.style.display = "none"; // Hide branch selector for cashiers/professionals
         } else {
             refText.innerText = "Consulta y Auditoría General de Consentimientos";
             filterSedeGroup.style.display = "block";
@@ -62,105 +68,8 @@ function checkAuth() {
 
         fetchRecords();
     } else {
-        loginContainer.style.display = "flex";
-        dashboardContainer.style.display = "none";
-        if (loggedUserArea) loggedUserArea.style.display = "none";
-    }
-}
-
-function toggleAuthMode(isRegister) {
-    document.getElementById("login-error").style.display = "none";
-    document.getElementById("reg-error").style.display = "none";
-    document.getElementById("reg-success").style.display = "none";
-    if (isRegister) {
-        document.getElementById("login-form").style.display = "none";
-        document.getElementById("register-form").style.display = "block";
-    } else {
-        document.getElementById("login-form").style.display = "block";
-        document.getElementById("register-form").style.display = "none";
-    }
-}
-
-function handleRegRoleChange(role) {
-    const wrapper = document.getElementById("reg-sede-wrapper");
-    const sedeSelectReg = document.getElementById("reg-sede");
-    if (role === "cajero") {
-        wrapper.style.display = "block";
-        sedeSelectReg.required = true;
-    } else {
-        wrapper.style.display = "none";
-        sedeSelectReg.required = false;
-    }
-}
-
-async function handleLogin(e) {
-    e.preventDefault();
-    const correo = document.getElementById("login-email").value;
-    const contraseña = document.getElementById("login-password").value;
-    const errorDiv = document.getElementById("login-error");
-    errorDiv.style.display = "none";
-
-    try {
-        const res = await fetch(`${API_URL}/api/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ correo, contraseña })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Credenciales incorrectas");
-
-        localStorage.setItem("adminUser", JSON.stringify(data.user));
-        checkAuth();
-    } catch (err) {
-        errorDiv.innerText = err.message;
-        errorDiv.style.display = "block";
-    }
-}
-
-async function handleRegister(e) {
-    e.preventDefault();
-    const nombre = document.getElementById("reg-name").value;
-    const correo = document.getElementById("reg-email").value;
-    const contraseña = document.getElementById("reg-password").value;
-    const rol = document.getElementById("reg-role").value;
-    const sede = rol === "cajero" ? document.getElementById("reg-sede").value : null;
-    const errorDiv = document.getElementById("reg-error");
-    const successDiv = document.getElementById("reg-success");
-    errorDiv.style.display = "none";
-    successDiv.style.display = "none";
-
-    try {
-        const res = await fetch(`${API_URL}/api/auth/register`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nombre, correo, contraseña, rol, sede })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Error al registrar");
-
-        successDiv.innerText = "Usuario registrado con éxito. Iniciando sesión...";
-        successDiv.style.display = "block";
-        setTimeout(async () => {
-            // Automatically log in after registration
-            try {
-                const autoLoginRes = await fetch(`${API_URL}/api/auth/login`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ correo, contraseña })
-                });
-                const autoLoginData = await autoLoginRes.json();
-                if (autoLoginRes.ok) {
-                    localStorage.setItem("adminUser", JSON.stringify(autoLoginData.user));
-                    toggleAuthMode(false);
-                    checkAuth();
-                }
-            } catch (e) {
-                toggleAuthMode(false);
-            }
-        }, 1000);
-    } catch (err) {
-        errorDiv.innerText = err.message;
-        errorDiv.style.display = "block";
+        // Redirect to index portal login if not authenticated
+        window.location.href = "../index/index.html";
     }
 }
 
@@ -180,6 +89,7 @@ async function fetchRecords() {
         const urlParams = new URLSearchParams();
         if (user.rol) urlParams.append("rol", user.rol);
         if (user.sede) urlParams.append("sede", user.sede);
+        if (user.nombre) urlParams.append("nombre", user.nombre);
 
         const res = await fetch(`${API_URL}/api/registros?${urlParams.toString()}`);
         if (!res.ok) throw new Error("Error al consultar la base de datos");
@@ -480,6 +390,138 @@ deleteRecordBtn.addEventListener("click", deleteCurrentRecord);
 window.onclick = function (event) {
     if (event.target === detailsModal) {
         closeModal();
+    }
+}
+
+// Tab Switching inside Dashboard
+function switchDashboardTab(tabId, btn) {
+    // Hide all tab contents
+    const contents = document.querySelectorAll('.dashboard-tab-content');
+    contents.forEach(content => content.style.display = 'none');
+
+    // Deactivate all tab buttons
+    const buttons = document.querySelectorAll('#dashboard-tabs .tab-btn');
+    buttons.forEach(button => button.classList.remove('active'));
+
+    // Show current active tab and set active button
+    document.getElementById(tabId).style.display = 'block';
+    btn.classList.add('active');
+
+    if (tabId === 'users-view') {
+        fetchUsers();
+    }
+}
+
+// Fetch all users (Admin only)
+async function fetchUsers() {
+    try {
+        const res = await fetch(`${API_URL}/api/users`);
+        if (!res.ok) throw new Error("No se pudo obtener la lista de usuarios");
+        const users = await res.json();
+        renderUsersTable(users);
+    } catch (err) {
+        console.error(err);
+        alert("Error al cargar usuarios: " + err.message);
+    }
+}
+
+// Render Users Table
+function renderUsersTable(users) {
+    const usersTableBody = document.getElementById("users-table-body");
+    usersTableBody.innerHTML = "";
+    if (users.length === 0) {
+        usersTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--gray-text); padding: 20px;">No hay usuarios registrados.</td></tr>`;
+        return;
+    }
+
+    users.forEach(u => {
+        const tr = document.createElement("tr");
+        const roleBadge = u.rol === "administrador" ? "badge-unas" : (u.rol === "cajero" ? "badge-cejas" : "badge-pedi");
+        tr.innerHTML = `
+            <td><strong>#${u.id}</strong></td>
+            <td>${u.nombre}</td>
+            <td>${u.correo}</td>
+            <td><span class="badge ${roleBadge}">${u.rol}</span></td>
+            <td>${u.sede || 'N/A'}</td>
+            <td>
+                <button class="btn-logout" onclick="deleteUser(${u.id}, '${u.nombre}')" style="border-color: #c62828; color: #c62828; padding: 4px 8px; font-size: 0.7rem; margin: 0;">
+                    Eliminar
+                </button>
+            </td>
+        `;
+        usersTableBody.appendChild(tr);
+    });
+}
+
+// Delete User
+async function deleteUser(id, name) {
+    const loggedUser = JSON.parse(localStorage.getItem("adminUser"));
+    if (loggedUser && loggedUser.id === id) {
+        alert("No puedes eliminar tu propio usuario.");
+        return;
+    }
+    if (!confirm(`¿Está seguro de que desea eliminar al usuario "${name}"?`)) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/api/users/${id}`, {
+            method: "DELETE"
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "No se pudo eliminar el usuario");
+
+        alert("Usuario eliminado con éxito.");
+        fetchUsers();
+    } catch (err) {
+        alert("Error al eliminar usuario: " + err.message);
+    }
+}
+
+// Handle role change in Admin User Registration form
+function handleRegRoleChange(role) {
+    const wrapper = document.getElementById("reg-sede-wrapper");
+    const sedeSelectReg = document.getElementById("reg-sede");
+    if (role === "cajero" || role === "profesional") {
+        wrapper.style.display = "block";
+        sedeSelectReg.required = true;
+    } else {
+        wrapper.style.display = "none";
+        sedeSelectReg.required = false;
+    }
+}
+
+// Register user via Admin Dashboard
+async function handleAdminRegister(e) {
+    e.preventDefault();
+    const nombre = document.getElementById("reg-name").value;
+    const correo = document.getElementById("reg-email").value;
+    const contraseña = document.getElementById("reg-password").value;
+    const rol = document.getElementById("reg-role").value;
+    const sede = (rol === "cajero" || rol === "profesional") ? document.getElementById("reg-sede").value : null;
+    const errorDiv = document.getElementById("reg-error");
+    const successDiv = document.getElementById("reg-success");
+
+    errorDiv.style.display = "none";
+    successDiv.style.display = "none";
+
+    try {
+        const res = await fetch(`${API_URL}/api/auth/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nombre, correo, contraseña, rol, sede })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Error al registrar");
+
+        successDiv.innerText = "Usuario creado exitosamente.";
+        successDiv.style.display = "block";
+        document.getElementById("admin-register-form").reset();
+        handleRegRoleChange("cajero"); // Reset sede visibility
+        fetchUsers();
+    } catch (err) {
+        errorDiv.innerText = err.message;
+        errorDiv.style.display = "block";
     }
 }
 

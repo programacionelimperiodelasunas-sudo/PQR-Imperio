@@ -338,6 +338,16 @@
 }
 
 @media (max-width: 600px) {
+    html, body {
+        overflow-x: hidden;
+    }
+    input, select, textarea,
+    #admin-register-form .input-group input,
+    #admin-register-form .input-group select,
+    .login-card .input-group input,
+    .login-card .input-group select {
+        font-size: 16px !important;
+    }
     .modal-signature-block {
         grid-template-columns: 1fr;
     }
@@ -354,6 +364,20 @@
         flex-direction: column;
         gap: 12px;
         align-items: flex-start !important;
+    }
+    /* Prevent the segmented tabs from turning into a vertical column on mobile */
+    .tabs-container.no-print {
+        flex-direction: row !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+        margin-bottom: 25px !important;
+    }
+    .tabs-container.no-print .tab-btn {
+        font-size: 0.72rem !important;
+        padding: 8px 10px !important;
+        white-space: nowrap;
     }
     .no-print a {
         width: 100%;
@@ -398,6 +422,21 @@
     }
     .brand-title {
         font-size: 1.8rem !important;
+    }
+    /* Stats cards mobile optimization */
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    .stat-card {
+        padding: 12px 8px !important;
+    }
+    .stat-number {
+        font-size: 1.4rem !important;
+    }
+    .stat-label {
+        font-size: 0.62rem !important;
+        letter-spacing: 0.5px !important;
     }
 }
 
@@ -464,22 +503,29 @@
 .login-card .input-group select {
     font-family: 'Montserrat', sans-serif;
     width: 100%;
-    padding: 14px 18px;
-    border: 1.5px solid var(--border-color);
-    border-radius: 30px;
+    padding: 14px 20px;
+    border: 1.5px solid rgba(195, 140, 127, 0.25);
+    border-radius: 50px;
     font-size: 0.95rem;
-    background-color: #ffffff;
+    background-color: #fdfcfb;
     color: var(--dark);
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     outline: none;
     box-sizing: border-box;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.login-card .input-group input:hover,
+.login-card .input-group select:hover {
+    border-color: rgba(195, 140, 127, 0.5);
+    background-color: #ffffff;
 }
 
 .login-card .input-group input:focus,
 .login-card .input-group select:focus {
     border-color: var(--primary);
     background-color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(195, 140, 127, 0.15);
+    box-shadow: 0 0 0 4px rgba(195, 140, 127, 0.15), 0 4px 10px rgba(195, 140, 127, 0.05);
 }
 
 .login-btn {
@@ -571,4 +617,100 @@
     color: #ffffff;
     border-color: #d32f2f;
     box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+}
+
+/* Premium styling for tab buttons inside the dashboard */
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    background-color: rgba(195, 140, 127, 0.1);
+    padding: 3px;
+    border-radius: 30px;
+    border: 1px solid rgba(195, 140, 127, 0.2);
+    max-width: 380px;
+    margin: 0 auto 30px auto;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 6px 12px;
+    border: none;
+    background: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--gray-text);
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    outline: none;
+}
+
+.tab-btn:hover {
+    color: var(--accent);
+    background-color: rgba(195, 140, 127, 0.05);
+}
+
+.tab-btn.active {
+    background-color: var(--primary);
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(195, 140, 127, 0.2);
+    font-weight: 700;
+}
+
+/* Premium input and select styles for user management form */
+#admin-register-form .input-group input,
+#admin-register-form .input-group select {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    padding: 10px 16px;
+    border: 1.5px solid rgba(195, 140, 127, 0.25);
+    border-radius: 30px;
+    font-size: 0.85rem;
+    background-color: #fdfcfb;
+    color: var(--dark);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-sizing: border-box;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+#admin-register-form .input-group input:hover,
+#admin-register-form .input-group select:hover {
+    border-color: rgba(195, 140, 127, 0.5);
+    background-color: #ffffff;
+}
+
+#admin-register-form .input-group input:focus,
+#admin-register-form .input-group select:focus {
+    border-color: var(--primary);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(195, 140, 127, 0.15), 0 3px 6px rgba(195, 140, 127, 0.05);
+}
+
+#admin-register-form .input-group label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    display: block;
+}
+
+/* Make btn-primary smaller in the dashboard context */
+.dashboard-tab-content .btn-primary {
+    padding: 6px 12px !important;
+    font-size: 0.75rem !important;
+    border-radius: 20px !important;
+}
+
+/* Make logout and other small control buttons even smaller */
+.btn-logout {
+    padding: 4px 8px !important;
+    font-size: 0.7rem !important;
 }

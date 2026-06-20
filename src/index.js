@@ -103,7 +103,7 @@ export default {
 					.run();
 
 				function roles_need_sede(r) {
-					return r === "cajero";
+					return r === "cajero" || r === "profesional";
 				}
 
 				return jsonResponse({ success: true, message: "Usuario registrado exitosamente" }, 201);
@@ -129,18 +129,45 @@ export default {
 				return jsonResponse({ success: true, user });
 			}
 
+			// GET /api/users (List all registered users)
+			if (path === "/api/users" && method === "GET") {
+				const { results } = await env.pqr_d1.prepare("SELECT id, nombre, correo, rol, sede FROM users ORDER BY id DESC").all();
+				return jsonResponse(results);
+			}
+
+			// DELETE /api/users/:id
+			if (path.startsWith("/api/users/") && method === "DELETE") {
+				const idStr = path.split("/").pop();
+				const id = parseInt(idStr, 10);
+				if (isNaN(id)) {
+					return jsonResponse({ error: "ID no válido" }, 400);
+				}
+
+				const result = await env.pqr_d1.prepare("DELETE FROM users WHERE id = ?").run();
+				if (result.meta.changes === 0) {
+					return jsonResponse({ error: "Usuario no encontrado" }, 404);
+				}
+
+				return jsonResponse({ success: true, message: "Usuario eliminado exitosamente" });
+			}
+
 			// ================= REGISTROS ROUTES =================
 
 			// GET /api/registros (List basic registry details)
 			if (path === "/api/registros" && method === "GET") {
 				const rolParam = url.searchParams.get("rol");
 				const sedeParam = url.searchParams.get("sede");
+				const nombreParam = url.searchParams.get("nombre");
 
 				let query = "SELECT id, tipo_pqr, nombre_cliente, documento, fecha_registro, sede, nombre_prof FROM registros";
 				let conditions = [];
 				let params = [];
 
-				if (rolParam && rolParam !== "administrador") {
+				if (rolParam === "profesional") {
+					// Professionals only see their own records
+					conditions.push("nombre_prof = ?");
+					params.push(nombreParam || "");
+				} else if (rolParam && rolParam !== "administrador") {
 					// Cashiers only see records for nails, brows, and pedicure
 					conditions.push("tipo_pqr IN ('Uñas Artificiales', 'Cejas y Pestañas', 'Pedicura Especializada')");
 					if (sedeParam) {
