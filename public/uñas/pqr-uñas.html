@@ -95,7 +95,7 @@
                     </div>
                     <div class="input-group">
                         <label for="cliente-otro-doc">Especifique otro tipo</label>
-                        <input type="text" id="cliente-otro-doc" placeholder="Si seleccionó otro...">
+                        <input type="text" id="cliente-otro-doc" placeholder="Si seleccionó otro..." disabled>
                     </div>
                 </div>
 
@@ -654,8 +654,8 @@
                     </div>
                     <div class="conditional-input" id="conditional-enfermedad">
                         <label for="enfermedad-detalle">Por favor, detalle la enfermedad o condición médica:</label>
-                        <textarea id="enfermedad-detalle" rows="2"
-                            placeholder="Detalles de la condición médica..."></textarea>
+                        <textarea id="enfermedad-detalle" rows="3"
+                            placeholder="Describa brevemente la enfermedad o condición médica..."></textarea>
                     </div>
                 </div>
 
@@ -670,9 +670,17 @@
                         </div>
                     </div>
                     <div class="conditional-input" id="conditional-acudiente">
-                        <label for="acudiente-autorizacion">Autorización del Acudiente (Nombre y Cédula del tutor legal)
-                            <span class="required">*</span></label>
-                        <input type="text" id="acudiente-autorizacion" placeholder="Ej. María Pérez - C.C. 10203040">
+                        <input type="hidden" id="acudiente-autorizacion">
+                        <div class="grid-col-3" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 5px; border: none; padding: 0; background: transparent;">
+                            <div class="input-group" style="margin-bottom: 0;">
+                                <label for="acudiente-nombre" style="font-size: 0.8rem; font-weight: 600; color: var(--accent); display: block; margin-bottom: 5px;">Nombre del Tutor Legal <span class="required">*</span></label>
+                                <input type="text" id="acudiente-nombre" placeholder="Nombre completo">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 0;">
+                                <label for="acudiente-documento" style="font-size: 0.8rem; font-weight: 600; color: var(--accent); display: block; margin-bottom: 5px;">Cédula / Documento <span class="required">*</span></label>
+                                <input type="text" id="acudiente-documento" placeholder="Número de Documento">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

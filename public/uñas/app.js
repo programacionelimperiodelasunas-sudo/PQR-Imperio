@@ -15,6 +15,28 @@ document.addEventListener("DOMContentLoaded", () => {
         dateInput.value = `${yyyy}-${mm}-${dd}`;
     }
 
+    // 1.5. AUTO-FILL PROFESSIONAL DATA IF LOGGED IN
+    const userStr = localStorage.getItem("adminUser");
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            if (user && user.nombre) {
+                const nombreProfInput = document.getElementById("nombre-profesional");
+                if (nombreProfInput) {
+                    nombreProfInput.value = user.nombre;
+                }
+            }
+            if (user && user.sede) {
+                const sedeSelect = document.getElementById("documento-sede");
+                if (sedeSelect) {
+                    sedeSelect.value = user.sede;
+                }
+            }
+        } catch (e) {
+            console.error("Error parsing adminUser from localStorage:", e);
+        }
+    }
+
     // 2. PROCEDURES INTERACTIVITY (SHOW/HIDE EXPLANATIONS)
     const procedureCheckboxes = document.querySelectorAll(".procedure-checkbox");
     procedureCheckboxes.forEach(checkbox => {
@@ -35,6 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 3. CONDITIONAL INPUTS
+    const clienteTipoDoc = document.getElementById("cliente-tipo-doc");
+    const clienteOtroDoc = document.getElementById("cliente-otro-doc");
+
+    function toggleOtroDocumento() {
+        if (clienteTipoDoc && clienteOtroDoc) {
+            if (clienteTipoDoc.value === "Otro") {
+                clienteOtroDoc.disabled = false;
+                clienteOtroDoc.required = true;
+            } else {
+                clienteOtroDoc.disabled = true;
+                clienteOtroDoc.required = false;
+                clienteOtroDoc.value = "";
+            }
+        }
+    }
+    if (clienteTipoDoc) {
+        clienteTipoDoc.addEventListener("change", toggleOtroDocumento);
+    }
+
     const enfSi = document.getElementById("enf-si");
     const enfNo = document.getElementById("enf-no");
     const condEnfermedad = document.getElementById("conditional-enfermedad");
@@ -61,15 +102,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const menorNo = document.getElementById("menor-no");
     const condAcudiente = document.getElementById("conditional-acudiente");
     const acudienteAutorizacion = document.getElementById("acudiente-autorizacion");
+    const acudienteNombre = document.getElementById("acudiente-nombre");
+    const acudienteDocumento = document.getElementById("acudiente-documento");
+
+    function updateAcudienteVal() {
+        if (acudienteNombre && acudienteDocumento && acudienteAutorizacion) {
+            const nombre = acudienteNombre.value.trim();
+            const doc = acudienteDocumento.value.trim();
+            if (nombre || doc) {
+                acudienteAutorizacion.value = `${nombre} - C.C. ${doc}`;
+            } else {
+                acudienteAutorizacion.value = "";
+            }
+        }
+    }
+
+    if (acudienteNombre && acudienteDocumento) {
+        acudienteNombre.addEventListener("input", updateAcudienteVal);
+        acudienteDocumento.addEventListener("input", updateAcudienteVal);
+    }
 
     function toggleAcudiente() {
         if (menorSi && menorSi.checked) {
             condAcudiente.classList.add("active");
-            if (acudienteAutorizacion) acudienteAutorizacion.required = true;
+            if (acudienteNombre) acudienteNombre.required = true;
+            if (acudienteDocumento) acudienteDocumento.required = true;
         } else {
             condAcudiente.classList.remove("active");
+            if (acudienteNombre) {
+                acudienteNombre.required = false;
+                acudienteNombre.value = "";
+            }
+            if (acudienteDocumento) {
+                acudienteDocumento.required = false;
+                acudienteDocumento.value = "";
+            }
             if (acudienteAutorizacion) {
-                acudienteAutorizacion.required = false;
                 acudienteAutorizacion.value = "";
             }
         }
@@ -304,6 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Reset conditional sections
                 toggleEnfermedad();
                 toggleAcudiente();
+                toggleOtroDocumento();
             } catch (err) {
                 console.error(err);
                 alert("Ocurrió un error al guardar en la base de datos: " + err.message);

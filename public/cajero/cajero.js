@@ -117,7 +117,10 @@ function renderTable(records) {
         if (rec.tipo_pqr === "Contratistas y Manicuristas") badgeClass = "badge-contra";
         if (rec.tipo_pqr === "Uso de Imagen y Voz") badgeClass = "badge-mkt";
 
-        const rawDate = new Date(rec.fecha_registro);
+        const dateStr = rec.fecha_registro && !rec.fecha_registro.includes("T") && !rec.fecha_registro.includes("Z")
+            ? rec.fecha_registro.replace(" ", "T") + "Z"
+            : rec.fecha_registro;
+        const rawDate = new Date(dateStr);
         const formattedDate = isNaN(rawDate) ? rec.fecha_registro : rawDate.toLocaleDateString('es-ES', {
             year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
         });
@@ -202,7 +205,10 @@ function showRecordDetails(rec) {
     if (rec.tipo_pqr === "Contratistas y Manicuristas") badge.style.background = "#fff3e0";
     if (rec.tipo_pqr === "Uso de Imagen y Voz") badge.style.background = "#e0f7fa";
 
-    const rawDate = new Date(rec.fecha_registro);
+    const dateStr = rec.fecha_registro && !rec.fecha_registro.includes("T") && !rec.fecha_registro.includes("Z")
+        ? rec.fecha_registro.replace(" ", "T") + "Z"
+        : rec.fecha_registro;
+    const rawDate = new Date(dateStr);
     const formattedDate = isNaN(rawDate) ? rec.fecha_registro : rawDate.toLocaleDateString('es-ES', {
         year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });

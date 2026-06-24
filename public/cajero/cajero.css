@@ -714,3 +714,85 @@
     padding: 4px 8px !important;
     font-size: 0.7rem !important;
 }
+
+/* PRINT MEDIA STYLES */
+@media print {
+    /* Hide dashboard and all non-print elements */
+    #dashboard-container,
+    .no-print,
+    .close-modal,
+    .modal-footer,
+    button {
+        display: none !important;
+    }
+
+    /* Reset body and page styles for clean print */
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 10pt !important;
+    }
+
+    /* Force details modal to display statically without modal styles */
+    .modal {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .modal-content {
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        animation: none !important;
+    }
+
+    .modal-header {
+        padding: 10px 0 !important;
+        border-bottom: 2px solid #000000 !important;
+        background: transparent !important;
+    }
+
+    .modal-body {
+        padding: 20px 0 !important;
+    }
+
+    .info-detail-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .info-detail-item {
+        border: 1px solid #e0e0e0 !important;
+        padding: 8px !important;
+    }
+
+    /* Prevent page break inside signature block */
+    .modal-signature-block {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 30px !important;
+        margin-top: 25px !important;
+        page-break-inside: avoid !important;
+    }
+
+    .modal-sig-card {
+        border: 1px solid #e0e0e0 !important;
+        padding: 10px !important;
+        background: transparent !important;
+    }
+}
