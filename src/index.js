@@ -480,8 +480,8 @@ export default {
 				}
 			}
 
-			// Route not found
-			return jsonResponse({ error: "Ruta no encontrada" }, 404);
+			// Fallback to static assets if no API route matches
+			return env.ASSETS.fetch(request);
 
 		} catch (error) {
 			return jsonResponse({ error: error.message || "Error interno del servidor" }, 500);

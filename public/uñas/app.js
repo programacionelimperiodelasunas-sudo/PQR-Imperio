@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const API_URL = "http://localhost:8787"; // Cambiar por tu URL de Cloudflare Worker en producción
+    const API_URL = "https://pqr-imperio.pqr-imperio.workers.dev"; // Cambiar por tu URL de Cloudflare Worker en producción
 
     // 1. AUTO-SET DATE
     const dateInput = document.getElementById("documento-fecha");

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8787";
+const API_URL = "https://pqr-imperio.pqr-imperio.workers.dev";
 
 function switchTab(tabId, btn) {
     // Hide all tab contents
